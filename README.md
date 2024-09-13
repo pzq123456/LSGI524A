@@ -1,4 +1,8 @@
 # LSGI524A
+> DDL :
+> - Assignment 1 : 1st November 2024, 11:59 PM.
+> - Assignment 2 : 15th November 2024, 11:59 PM.
+
 ## Course Information
 - Lecturer: Yang Xu(yang.ls.xu@polyu.edu.hk, ZS626(LSGI))
 - TAs:
