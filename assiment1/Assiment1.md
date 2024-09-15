@@ -4,22 +4,23 @@
 > - repo : https://github.com/pzq123456/LSGI524A
 ## Task1 [25 points]:  
 ### (1) How many valid bicycle trips were documented on 25 July 2019? 
-
+20187
 ### (2) How many bike stations were used on that day? 
-
+535
 ### (3) How many unique bikes were used? 
+3822
 
 ## Task2 [25 points]: 
 
-|Indicator         |  Trip duration  | Trip distance |
+|Indicator         |  Trip duration(s)  | Trip distance |
 | ---              |      ---        |      ---      | 
-|Max value         |                 |               |
-|Min value         |                 |               |
-|Median            |                 |               |
-|Mean              |                 |               |
-|25% percentile    |                 |               |
-|75% percentile    |                 |               |
-|Standard deviation|                 |               |
+|Max value         |31243                 |               |
+|Min value         |61                 |               |
+|Median            |799.0                 |               |
+|Mean              |1187.6403626096003                 |               |
+|25% percentile    |465.0                 |               |
+|75% percentile    |1403.0                 |               |
+|Standard deviation|1400.9766896637864                 |               |
 
 ## Task3 [25 points]:  
 Data visualization based on the processed bike-sharing data. Please use the skills you have gained in data  visualization  to  present  answers  to  the  following  questions.  Both  figures  and  corresponding descriptions should be included in your report. 
