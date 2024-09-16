@@ -8,6 +8,7 @@ PATH2 = PARENT_PATH + '/data/station.csv'
 
 SAVE_PATH1 = PARENT_PATH + '/data/chicago_data_cleaned.csv'
 SAVE_PATH2 = PARENT_PATH + '/data/station_cleaned.csv'
+SAVE_PATH3 = PARENT_PATH + '/data/locations.csv' 
 
 # clean the chicago data
 def clean_chicago_data():
@@ -58,6 +59,28 @@ def get_answer_task1():
 
 # main function
 
+def getLocations():
+    print('get O-D locations(Lon,Lat) for each trip...')
+    # chicago_data_cleaned 中记录的 from_station_id 和 to_station_id
+    # 从 station_cleaned 中找到对应的经纬度 并按照顺序存储到 locations.csv
+    # columns : trip_id, from_station_id, to_station_id, from_lat, from_lon, to_lat, to_lon
+    df1 = pd.read_csv(SAVE_PATH1)
+    df2 = pd.read_csv(SAVE_PATH2)
+    df2 = df2.set_index('id')
+    locations = []
+    for index, row in df1.iterrows():
+        from_id = row['from_station_id']
+        to_id = row['to_station_id']
+        from_lat = df2.loc[from_id]['lat']
+        from_lon = df2.loc[from_id]['lon']
+        to_lat = df2.loc[to_id]['lat']
+        to_lon = df2.loc[to_id]['lon']
+        locations.append([row['trip_id'], from_id, to_id, from_lat, from_lon, to_lat, to_lon])
+    
+    locations = pd.DataFrame(locations, columns=['trip_id', 'from_station_id', 'to_station_id', 'from_lat', 'from_lon', 'to_lat', 'to_lon'])
+    locations.to_csv(SAVE_PATH3, index=False)
+    print('locations saved to', SAVE_PATH3)
+
 def task1():
     '''
     **Usage**:
@@ -82,3 +105,5 @@ def task1():
 
 if __name__ == '__main__':
     task1()
+    # attach the locations to the cleaned data not for the task1
+    # getLocations()
