@@ -1,10 +1,10 @@
 import time
 import pandas as pd
 import matplotlib.pyplot as plt
-from pyreproj import Reprojector
+# from pyreproj import Reprojector
 
 
-transform = Reprojector().get_transformation_function(from_srs=4326, to_srs='epsg:26916')
+# transform = Reprojector().get_transformation_function(from_srs=4326, to_srs='epsg:26916')
 
 PARENT_PATH = 'LSGI524A/assiment1'
 

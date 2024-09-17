@@ -1,7 +1,9 @@
 import pandas as pd
+import tqdm
 
 # data path
-PARENT_PATH = 'LSGI524A/assiment1'
+# PARENT_PATH = '/LSGI524A/assiment1' # linux path
+PARENT_PATH = 'G:/polyulessons/LSGI524A/assiment1' # windows path
 
 PATH1 = PARENT_PATH + '/data/chicago_data.csv'
 PATH2 = PARENT_PATH + '/data/station.csv'
@@ -9,6 +11,7 @@ PATH2 = PARENT_PATH + '/data/station.csv'
 SAVE_PATH1 = PARENT_PATH + '/data/chicago_data_cleaned.csv'
 SAVE_PATH2 = PARENT_PATH + '/data/station_cleaned.csv'
 SAVE_PATH3 = PARENT_PATH + '/data/locations.csv' 
+
 
 # clean the chicago data
 def clean_chicago_data():
@@ -29,6 +32,11 @@ def clean_chicago_data():
 
     # 3. Drop records with any missing values
     df = df.dropna()
+    # 指定 id 类型为 int
+    df['trip_id'] = df['trip_id'].astype(int)
+    df['bikeid'] = df['bikeid'].astype(int)
+    df['from_station_id'] = df['from_station_id'].astype(int)
+    df['to_station_id'] = df['to_station_id'].astype(int)
     # save the cleaned data 
     df.to_csv(SAVE_PATH1, index=False)
 
@@ -68,7 +76,8 @@ def getLocations():
     df2 = pd.read_csv(SAVE_PATH2)
     df2 = df2.set_index('id')
     locations = []
-    for index, row in df1.iterrows():
+    # for index, row in df1.iterrows():
+    for index, row in tqdm.tqdm(df1.iterrows(), total=df1.shape[0]):
         from_id = row['from_station_id']
         to_id = row['to_station_id']
         from_lat = df2.loc[from_id]['lat']
@@ -78,6 +87,10 @@ def getLocations():
         locations.append([row['trip_id'], from_id, to_id, from_lat, from_lon, to_lat, to_lon])
     
     locations = pd.DataFrame(locations, columns=['trip_id', 'from_station_id', 'to_station_id', 'from_lat', 'from_lon', 'to_lat', 'to_lon'])
+    # 指定 id 类型为 int
+    locations['trip_id'] = locations['trip_id'].astype(int)
+    locations['from_station_id'] = locations['from_station_id'].astype(int)
+    locations['to_station_id'] = locations['to_station_id'].astype(int)
     locations.to_csv(SAVE_PATH3, index=False)
     print('locations saved to', SAVE_PATH3)
 
