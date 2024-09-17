@@ -11,16 +11,34 @@
 3822
 
 ## Task2 [25 points]: 
+Max value :  20083.35
+Min value :  103.67
+Median :  1840.42
+Mean :  2460.647581079681
+25% percentile :  1107.48
+75% percentile :  3202.5
+Standard deviation :  1950.106137982676
+| Indicator          |  Trip duration(s)  | Trip distance(m)  |
+|  ---               |      ---           |      ---          | 
+| Max value          | 31243              | 20083.35          |
+| Min value          | 61                 | 103.67            |
+| Median             | 799.0              | 1840.42           |
+| Mean               | 1187.6403626096003 | 2460.647581079681 |
+| 25% percentile     | 465.0              | 1107.48           |
+| 75% percentile     | 1403.0             | 3202.5            |
+| Standard deviation | 1400.9766896637864 | 1950.106137982676 |
 
-|Indicator         |  Trip duration(s)  | Trip distance |
-| ---              |      ---        |      ---      | 
-|Max value         |31243                 |               |
-|Min value         |61                 |               |
-|Median            |799.0                 |               |
-|Mean              |1187.6403626096003                 |               |
-|25% percentile    |465.0                 |               |
-|75% percentile    |1403.0                 |               |
-|Standard deviation|1400.9766896637864                 |               |
+> - Trip distance may be zero. I found 885 trips have the same original and destination station. Those can be considered as invalid records. Ignoring them, I get the results above, and you can check the original results below.
+> 
+>   | Indicator          |  Trip distance(m)  |
+>   |  ---               |       ---          | 
+>   | Max value          | 20083.35           |
+>   | Min value          | 0.0                |
+>   | Median             | 1753.74            |
+>   | Mean               | 2352.772557091197  |
+>   | 25% percentile     | 1016.56            |
+>   | 75% percentile     | 3096.995           |
+>   | Standard deviation | 1972.3091923774828 |
 
 ## Task3 [25 points]:  
 Data visualization based on the processed bike-sharing data. Please use the skills you have gained in data  visualization  to  present  answers  to  the  following  questions.  Both  figures  and  corresponding descriptions should be included in your report. 

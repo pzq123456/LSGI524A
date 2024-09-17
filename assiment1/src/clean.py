@@ -2,7 +2,7 @@ import pandas as pd
 import tqdm
 
 # data path
-# PARENT_PATH = '/LSGI524A/assiment1' # linux path
+# PARENT_PATH = 'LSGI524A/assiment1' # linux path
 PARENT_PATH = 'G:/polyulessons/LSGI524A/assiment1' # windows path
 
 PATH1 = PARENT_PATH + '/data/chicago_data.csv'

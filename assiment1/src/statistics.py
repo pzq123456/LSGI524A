@@ -1,18 +1,14 @@
 import time
 import pandas as pd
 import matplotlib.pyplot as plt
-# from pyreproj import Reprojector
-
-
-# transform = Reprojector().get_transformation_function(from_srs=4326, to_srs='epsg:26916')
 
 PARENT_PATH = 'LSGI524A/assiment1'
 
 SAVE_PATH1 = PARENT_PATH + '/data/chicago_data_cleaned.csv'
-SAVE_PATH2 = PARENT_PATH + '/data/station_cleaned.csv'
+SAVE_PATH2 = PARENT_PATH + '/data/output.csv'
 
 # Trip duration : Max value, Min value, Median, Mean, 25% percentile, 75% percentile, Standard deviation
-def getStatistics(column):
+def getStatistics(column, title="Statistics"):
     # save the statistics as a dictionary
     statistics = {
         'Max value': column.max(),
@@ -24,6 +20,7 @@ def getStatistics(column):
         'Standard deviation': column.std()
     }
 
+    print(title)
     # print the statistics
     for key, value in statistics.items():
         print(key, ': ', value)
@@ -43,23 +40,30 @@ def visualizeStatistics(statistics, title="Boxplot with Standard Deviation"):
     ax.set_title(title)
     plt.show()
 
-
-if __name__ == '__main__':
+def task2():
     # load the cleaned data
-    # df = pd.read_csv(SAVE_PATH1)
-    # # get the statistics of the trip duration
-    # trip_duration = df['tripduration']
-    # # convert the str to numeric as int ignore the numbers afther the dot
-    # trip_duration = pd.to_numeric(trip_duration, errors='coerce').dropna().astype(int)
-    # # get the statistics
-    # trip_duration_statistics = getStatistics(trip_duration)
+    df = pd.read_csv(SAVE_PATH1)
+    # get the statistics of the trip duration
+    trip_duration = df['tripduration']
+    # convert the str to numeric as int ignore the numbers afther the dot
+    trip_duration = pd.to_numeric(trip_duration, errors='coerce').dropna().astype(int)
+    # get the statistics
+    trip_duration_statistics = getStatistics(trip_duration, title="Trip Duration Statistics")
+    # if you want to visualize the statistics
     # visualizeStatistics(trip_duration_statistics, title = "Trip Duration Boxplot with Standard Deviation")
 
-    # 计算时间 执行 transform 的时间
-    # print(transform(47.46614, 7.80071))
+    # load the cleaned data
+    df = pd.read_csv(SAVE_PATH2)
+    # get the statistics of the trip duration
+    trip_distances = df['distance']
+    # save 2 decimal points
+    trip_distances = pd.to_numeric(trip_distances, errors='coerce').dropna().round(2)
+    # 剔除异常值 0.0
+    trip_distances = trip_distances[trip_distances != 0.0]
+    # get the statistics
+    trip_distances_statistics = getStatistics(trip_distances, title="Trip Distance Statistics")
+    # if you want to visualize the statistics
+    # visualizeStatistics(trip_distances_statistics, title = "Trip Distance Boxplot with Standard Deviation")
 
-    # runing time for transform
-    start = time.time()
-    transform(47.46614, 7.80071)
-    end = time.time() # runing time for transform:  0.026226043701171875
-    print('runing time for transform: ', (end - start) * 1000)
+if __name__ == '__main__':
+    task2()

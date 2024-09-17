@@ -55,5 +55,4 @@ def getProjectedDistance(SAVE_PATH3, SAVE_PATH4):
     with ProgressBar():
         df.to_csv(SAVE_PATH4, index=False, single_file=True)
 
-# 示例调用
 getProjectedDistance(SAVE_PATH3, SAVE_PATH4)
