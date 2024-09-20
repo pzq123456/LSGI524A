@@ -2,6 +2,12 @@
 > DDL :
 > - Assignment 1 : 1st November 2024, 11:59 PM.
 > - Assignment 2 : 15th November 2024, 11:59 PM.
+> - Project : 
+>   - (1) A 1-page proposal about the potential research topic and **11 October**, 2024 5% dataset(s) used
+>   - (2) Full manuscript with all the required components **13 December**, 2024 75%
+>   - (3) In-class presentation and Q/A performance **22 November & 29 November**, 2024 20%
+
+4300 * 7 = 30100
 
 ## Course Information
 - Lecturer: Yang Xu(yang.ls.xu@polyu.edu.hk, ZS626(LSGI))

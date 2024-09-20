@@ -5,8 +5,8 @@ from dask.diagnostics import ProgressBar
 
 transformer = Transformer.from_crs("EPSG:4326", "EPSG:26916", always_xy=True)
 
-# PARENT_PATH = 'LSGI524A/assiment1' # linux path
-PARENT_PATH = 'G:/polyulessons/LSGI524A/assiment1' # windows path
+PARENT_PATH = 'assiment1' # linux path
+# PARENT_PATH = 'G:/polyulessons/LSGI524A/assiment1' # windows path
 
 SAVE_PATH3 = PARENT_PATH + '/data/locations.csv'
 SAVE_PATH4 = PARENT_PATH + '/data/output.csv'

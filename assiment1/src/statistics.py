@@ -1,8 +1,7 @@
-import time
 import pandas as pd
 import matplotlib.pyplot as plt
 
-PARENT_PATH = 'LSGI524A/assiment1'
+PARENT_PATH = 'assiment1'
 
 SAVE_PATH1 = PARENT_PATH + '/data/chicago_data_cleaned.csv'
 SAVE_PATH2 = PARENT_PATH + '/data/output.csv'

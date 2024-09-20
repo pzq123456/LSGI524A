@@ -11,13 +11,7 @@
 3822
 
 ## Task2 [25 points]: 
-Max value :  20083.35
-Min value :  103.67
-Median :  1840.42
-Mean :  2460.647581079681
-25% percentile :  1107.48
-75% percentile :  3202.5
-Standard deviation :  1950.106137982676
+
 | Indicator          |  Trip duration(s)  | Trip distance(m)  |
 |  ---               |      ---           |      ---          | 
 | Max value          | 31243              | 20083.35          |
@@ -45,8 +39,15 @@ Data visualization based on the processed bike-sharing data. Please use the skil
 
 ### (1) How does the number of departure trips change over 24 hours? Is there any rhythm or pattern?  
 
-### (2) What is the distribution of the number of departure trips at different stations? What about the distribution of arrival trips?  
+![](./imgs/t3q1.png)
+> figure 1: The number of departure trips over 24 hours. The x-axis represents the hour of the day, and the y-axis represents the number of departure trips. 
 
+There are two peaks at around 8 am and 5 pm, and the peak around 5 pm is the highest, which may be due to people using shared bicycles when going to and from work. The usage is minimal in the early morning, which may be due to most people sleeping.
+
+### (2) What is the distribution of the number of departure trips at different stations? What about the distribution of arrival trips?  
+https://contextily.readthedocs.io/en/latest/
+https://geopandas.org/en/stable/getting_started/install.html
+https://github.com/gboeing/osmnx
 ### (3) What is the distribution of the trip distance (measured as straight-line Euclidean distance)? What will you conclude from this distribution? 
 
 ### (4) What is the distribution of the travel time (i.e., trip duration)?
@@ -54,8 +55,7 @@ Data visualization based on the processed bike-sharing data. Please use the skil
 ## Task4 [25 points]:  
 Suppose the bike-sharing operator plans to manage efficiently by dividing bike stations into multiple service zones based on the distance between stations. Some clustering algorithms (e.g., DBSCAN, SVM) could be useful for the operator.  
 
-Please  refer  to  this  website  to  cluster  all  bike  stations  in  Chicago  using  the  Density-based  Spatial Clustering of Applications with Noise (DBSCAN) algorithm packaged in scikit-learn. The maximum distance between two stations is 600 meters, and the number of samples in a neighborhood for a point 
-to be considered as a core point is 2 stations. The other parameters are set as default. Please list the number of clusters and the station ids in each cluster in your report.  
+Please  refer  to  this  website  to  cluster  all  bike  stations  in  Chicago  using  the  Density-based  Spatial Clustering of Applications with Noise (DBSCAN) algorithm packaged in scikit-learn. The maximum distance between two stations is 600 meters, and the number of samples in a neighborhood for a point to be considered as a core point is 2 stations. The other parameters are set as default. Please list the number of clusters and the station ids in each cluster in your report.  
  
  
 ## Bonus for Task4 [+10 points]:  
