@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-PARENT_PATH = 'LSGI524A/assiment1' # linux path
+PARENT_PATH = 'assiment1/' # linux path
 
 SAVE_PATH1 = PARENT_PATH + '/data/chicago_data_cleaned.csv'
 SAVE_PATH2 = PARENT_PATH + '/data/station_cleaned.csv'
@@ -24,29 +24,20 @@ def getDepartureTrips():
 def getStationTrips():
     # 读取CSV文件
     data = pd.read_csv(SAVE_PATH1)
+    # 读取station_cleaned.csv文件
+    station = pd.read_csv(SAVE_PATH2)
+    # station_cleaned.csv文件中的station_id和data.csv文件中的from_station_id和to_station_id相同
+    # 统计出发及到达站点的次数 追加到station_cleaned.csv文件中
+    station['departure'] = data.groupby('from_station_id').size()
+    station['arrival'] = data.groupby('to_station_id').size()
+    # 对于没有出发或到达的站点，将其次数设置为0
+    station['departure'].fillna(0, inplace=True)
+    station['arrival'].fillna(0, inplace=True)
+    # 保存到CSV文件 还是保存到station_cleaned.csv文件中
+    station.to_csv(SAVE_PATH2, index=False)
 
-    # 统计每个站点的出发和到达行程数量
-    departure_counts = data.groupby('from_station_name')['trip_id'].count()
-    arrival_counts = data.groupby('to_station_name')['trip_id'].count()
+    
 
-    # 将出发和到达行程数量合并到同一个DataFrame中
-    station_counts = pd.DataFrame({
-        'Departures': departure_counts,
-        'Arrivals': arrival_counts
-    }).fillna(0)  # 如果某些站点没有出发或到达行程，用0填充
-
-    # 绘制堆叠柱状图
-    station_counts.plot(kind='bar', stacked=True, figsize=(10, 6), color=['skyblue', 'orange'])
-
-    # 设置图表标题和标签
-    plt.title('Distribution of Departure and Arrival Trips by Station')
-    plt.xlabel('Station Name')
-    plt.ylabel('Number of Trips')
-
-    # 显示图表
-    plt.xticks(rotation=90)  # X轴标签旋转90度以便清晰显示
-    plt.tight_layout()  # 自动调整图表布局
-    plt.show()
 
 
 if __name__ == "__main__":
