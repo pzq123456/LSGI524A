@@ -4,6 +4,7 @@ export function initCanvasLayer() {
         initialize: function () {
             this._data = [];
             this._originalData = [];
+            this._stastics = {}; // 统计信息 会自动更新
         },
         
         // 在添加图层到地图时调用

@@ -1,7 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-PARENT_PATH = 'assiment1/' # linux path
+# PARENT_PATH = 'assiment1/' # linux path
+PARENT_PATH = 'G:/polyulessons/LSGI524A/assiment1' # windows path
 
 SAVE_PATH1 = PARENT_PATH + '/data/chicago_data_cleaned.csv'
 SAVE_PATH2 = PARENT_PATH + '/data/station_cleaned.csv'
@@ -35,10 +36,6 @@ def getStationTrips():
     station['arrival'].fillna(0, inplace=True)
     # 保存到CSV文件 还是保存到station_cleaned.csv文件中
     station.to_csv(SAVE_PATH2, index=False)
-
-    
-
-
 
 if __name__ == "__main__":
     # getDepartureTrips()
