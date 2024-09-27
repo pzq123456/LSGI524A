@@ -45,9 +45,8 @@ Data visualization based on the processed bike-sharing data. Please use the skil
 There are two peaks at around 8 am and 5 pm, and the peak around 5 pm is the highest, which may be due to people using shared bicycles when going to and from work. The usage is minimal in the early morning, which may be due to most people sleeping.
 
 ### (2) What is the distribution of the number of departure trips at different stations? What about the distribution of arrival trips?  
-https://contextily.readthedocs.io/en/latest/
-https://geopandas.org/en/stable/getting_started/install.html
-https://github.com/gboeing/osmnx
+![](./imgs/t3q2.png)
+
 ### (3) What is the distribution of the trip distance (measured as straight-line Euclidean distance)? What will you conclude from this distribution? 
 
 ### (4) What is the distribution of the travel time (i.e., trip duration)?

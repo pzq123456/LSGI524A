@@ -1,12 +1,15 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy.stats as stats
+import numpy as np
 
-# PARENT_PATH = 'assiment1/' # linux path
-PARENT_PATH = 'G:/polyulessons/LSGI524A/assiment1' # windows path
+PARENT_PATH = 'assiment1/' # linux path
+# PARENT_PATH = 'G:/polyulessons/LSGI524A/assiment1' # windows path
 
 SAVE_PATH1 = PARENT_PATH + '/data/chicago_data_cleaned.csv'
 SAVE_PATH2 = PARENT_PATH + '/data/station_cleaned.csv'
 SAVE_PATH3 = PARENT_PATH + '/data/locations.csv' 
+SAVE_PATH4 = PARENT_PATH + '/data/output.csv'
 
 #Q1: How does the number of departure trips change over 24 hours? Is there any rhythm or pattern?
 def getDepartureTrips():
@@ -37,6 +40,32 @@ def getStationTrips():
     # 保存到CSV文件 还是保存到station_cleaned.csv文件中
     station.to_csv(SAVE_PATH2, index=False)
 
+# (3) What is the distribution of the trip distance
+#  (measured as straight-line Euclidean distance)? What will you conclude from this distribution? 
+def getTripDistanceDistribution():
+    # 读取CSV文件
+    data = pd.read_csv(SAVE_PATH4)
+#     trip_id,from_station_id,to_station_id,from_lat,from_lon,to_lat,to_lon,from_x_transformed,from_y_transformed,to_x_transformed,to_y_transformed,distance
+# 23947152,97,22,41.865312,-87.617867,41.8694821,-87.6554864,448721.8498378043,4635006.672601727,445603.2531429469,4635492.821407506,3156.2613970544194
+    # 拟合分布曲线 正态分布 使用 scipy.stats.norm.fit() 拟合正态分布
+    mu, sigma = stats.norm.fit(data['distance'])
+    x = np.linspace(data['distance'].min(), data['distance'].max(), 1000)
+    y = stats.norm.pdf(x, mu, sigma)
+    # 绘制直方图
+    plt.hist(data['distance'], bins=100, alpha=0.5, density=True, edgecolor='black')
+    # 绘制拟合曲线
+    plt.plot(x, y, label='N(mu=' + str(round(mu, 2)) + ',sigma=' + str(round(sigma, 2)) + ')')
+    # 添加标题
+    plt.title('Trip Distance Distribution')
+    # 将拟合曲线的参数添加到图例中
+    # 添加标签
+    plt.xlabel('Distance (m)')
+    plt.ylabel('Frequency')
+    plt.legend()
+    # 显示
+    plt.show()
+
 if __name__ == "__main__":
     # getDepartureTrips()
-    getStationTrips()
+    # getStationTrips()
+    getTripDistanceDistribution()
