@@ -1,10 +1,14 @@
+import { Stastics } from "./stastics.js";
+
 export function initCanvasLayer() {
 
     L.CanvasLayer = L.Layer.extend({
         initialize: function () {
             this._data = [];
             this._originalData = [];
-            this._stastics = {}; // 统计信息 会自动更新
+            this._stastics = new Stastics(); // 单值统计
+            this._customGetVal = null; // 自定义统计函数
+            this._legend = null;
         },
         
         // 在添加图层到地图时调用
@@ -31,6 +35,8 @@ export function initCanvasLayer() {
 
             this._hoveredPoint = null;
 
+            this._createLegend();
+            this._legend.addTo(this._map);
             // 绘制初始图形
             this._resetCanvas();
         },
@@ -48,19 +54,30 @@ export function initCanvasLayer() {
         _resetData(){
             this._data = [];
             this._originalData = [];
+            this._stastics.clear();
         },
 
-        setData(data, getLatLng = function (d) { return d; }) {
+        setData(data, getLatLng = function (d) { return d; }, getVal) {
             this._data = data.map(getLatLng);
             this._originalData = data;
+            if(getVal){ // 如果有统计函数 才会进行统计
+                this._stastics.append(data, getVal);
+                this._customGetVal = getVal;
+            }
             this._resetCanvas();
         },
 
         // 追加数据
-        appendData(data, getLatLng = function (d) { return d; }) {
+        appendData(data, getLatLng = function (d) { return d; }, getVal) {
             this._data = this._data.concat(data.map(getLatLng));
             this._originalData = this._originalData.concat(data);
+            if(getVal){ // 如果有统计函数 才会进行统计
+                this._stastics.append(data, getVal);
+                this._customGetVal = getVal; 
+            }
             this._resetCanvas();
+            this._legend.update();
+            console.log(this._legend);
         },
 
         // 点击事件处理函数
@@ -139,11 +156,17 @@ export function initCanvasLayer() {
             this._data.forEach((latLng, index) => {
                 let point = this._map.latLngToContainerPoint(latLng);
 
+                let value = this._customGetVal ? this._customGetVal(this._originalData[index]) : 1;
+
+                let color = this._stastics.mapValue2Color(value);
+
+                const radius = 5;
+
                 // 默认绘制红色点
                 this._ctx.beginPath();
                 this._ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI, false);
                 // 亮黄色
-                this._ctx.fillStyle = "rgba(255, 255, 255)";
+                this._ctx.fillStyle = color;
                 this._ctx.fill();
             });
 
@@ -156,10 +179,6 @@ export function initCanvasLayer() {
                 // 虚线
                 this._ctx.setLineDash([5, 5]);
                 this._ctx.stroke();
-
-                // fill style
-                this._ctx.fillStyle = 'rgba(0,0,0,0.4)';
-                this._ctx.fill();
             }
         },
 
@@ -213,6 +232,45 @@ export function initCanvasLayer() {
             var dy = point1.y - point2.y;
             return Math.sqrt(dx * dx + dy * dy);
         },
+
+        _createLegend: function () {
+            let legend = L.control({position: 'bottomright'});
+
+            legend.onAdd = this._legendHelper.bind(this);
+
+            legend.update = function () {
+                this._legend._container.innerHTML = '';
+                this._legend._container.appendChild(this._legendHelper());
+            }.bind(this);
+
+            return this._legend = legend;
+        },
+
+        _legendHelper: function () {
+            const div = L.DomUtil.create('div', 'info legend');
+            const labels = [];
+            let from, to;
+
+            const grades = this._stastics.getGrades(5);
+            console.log(grades);
+            const colors = [];
+
+            for (let i = 0; i < grades.length - 1; i++) {
+                colors.push(this._stastics.mapValue2Color(grades[i]));
+            }
+            console.log(colors);
+            console.log(this._stastics.mapValue2Color(0));
+
+            // labels.push('<h4>Legend</h4>');
+            for (let i = 0; i < grades.length - 1; i++) {
+                from = Math.round(grades[i]);
+                to = Math.round(grades[i + 1]);
+                labels.push(`<i style="background:${colors[i]}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
+            }
+
+            div.innerHTML = labels.join('<br>');
+            return div;
+        }
 
         
     });

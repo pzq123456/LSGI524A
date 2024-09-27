@@ -53,8 +53,10 @@ fetch('../data/station_cleaned.csv')
             worker: true, // 使用 Web Worker 处理 CSV
 
             chunk: function(results, parser) {
-                console.log('Chunk data:', results.data);
-                canvasLayer.appendData(results.data, (d) => [parseFloat(d.lat), parseFloat(d.lon)]);
+                // console.log('Chunk data:', results.data);
+                canvasLayer.appendData(results.data, 
+                    (d) => [parseFloat(d.lat), parseFloat(d.lon)],
+                    (d) => parseInt(d.arrival));
             },
         });
     })
