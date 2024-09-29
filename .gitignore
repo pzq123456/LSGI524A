@@ -1,5 +1,5 @@
 info/
 assiment1/data/*
-!assiment1/data/chicago_data_cleaned.csv
+!assiment1/data/station_cleaned.csv
 .venv/
 __pycache__/
