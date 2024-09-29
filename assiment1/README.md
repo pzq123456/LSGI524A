@@ -1,4 +1,7 @@
 # Assiment 1 
+What to Submit:
+(1) A report in .pdf format containing your answers to all the above tasks, named as your student ID + name.
+(2) A .py file containing your codes for all four tasks in this assignment, named as your student ID + name. Please submit student ID_name.zip (zipped report and code) via PolyU Blackboard. The due date for this assignment is 1st November 2024, 11:59 PM.
 
 ## 性能优化
 根据测试，每次坐标投影操作约需 0.02 秒，对于包含两万多条记录的完整数据集，顺序执行预计需要约 400 秒（即不到 7 分钟）。为了提升性能，我采用了两种优化手段：分块并行计算和向量化处理。首先，分块并行计算通过 dask 框架实现，dask 可以将大规模数据集自动划分为多个分块，并利用多核 CPU 并行执行任务，从而显著提高计算效率。其次，频繁的 I/O 操作会拖慢整体性能，因此我采用向量化计算，通过一次性加载大批数据，并对整个数据集进行批量操作。pyproj 底层基于 proj4，能够支持 ndarray 的向量化处理，从而进一步加速了坐标投影过程，大幅减少了逐行计算的开销。通过这两种方法，数据处理的效率得到了显著提升，最终执行时间缩短到 4.92 秒。

@@ -26,12 +26,12 @@ let baseMapInfos = [
     //     style: "rastertiles/voyager_nolabels",
     //     attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
     // },
-    // {
-    //     name: "OSM",
-    //     url: OSMUrl,
-    //     style: "",
-    //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    // }
+    {
+        name: "OSM",
+        url: OSMUrl,
+        style: "",
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }
 ]
 
 export { baseMapInfos };

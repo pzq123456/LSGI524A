@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 PARENT_PATH = 'assiment1'
 
 SAVE_PATH1 = PARENT_PATH + '/data/chicago_data_cleaned.csv'
-SAVE_PATH2 = PARENT_PATH + '/data/output.csv'
+SAVE_PATH4 = PARENT_PATH + '/data/output.csv'
 
 # Trip duration : Max value, Min value, Median, Mean, 25% percentile, 75% percentile, Standard deviation
 def getStatistics(column, title="Statistics"):
@@ -52,7 +52,7 @@ def task2():
     # visualizeStatistics(trip_duration_statistics, title = "Trip Duration Boxplot with Standard Deviation")
 
     # load the cleaned data
-    df = pd.read_csv(SAVE_PATH2)
+    df = pd.read_csv(SAVE_PATH4)
     # get the statistics of the trip duration
     trip_distances = df['distance']
     # save 2 decimal points

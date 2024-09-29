@@ -9,6 +9,10 @@ export function initCanvasLayer() {
             this._stastics = new Stastics(); // 单值统计
             this._customGetVal = null; // 自定义统计函数
             this._legend = null;
+            this._colors = [
+                '#f7fbff', '#deebf7', '#9ecae1', 
+                '#6baed6', '#3182bd', '#08519c', '#08306b'
+            ];
         },
         
         // 在添加图层到地图时调用
@@ -76,8 +80,10 @@ export function initCanvasLayer() {
                 this._customGetVal = getVal; 
             }
             this._resetCanvas();
-            this._legend.update();
-            console.log(this._legend);
+            if(this._legend){
+                this._legend.update();
+            }
+            // console.log(this._legend);
         },
 
         // 点击事件处理函数
@@ -105,10 +111,20 @@ export function initCanvasLayer() {
             }
         },
 
+        setColors(colors){
+            this._colors = colors;
+            if(this._legend){
+                this._legend.update();
+            }
+            this._resetCanvas();
+        },
+
         // 在移除图层时调用
         onRemove: function (map) {
             // 移除 Canvas 元素
             L.DomUtil.remove(this._canvas);
+
+            this._legend.remove();
             
             // 移除事件监听
             this._map.off('mousemove', this._onMouseMove, this);
@@ -157,14 +173,12 @@ export function initCanvasLayer() {
                 let point = this._map.latLngToContainerPoint(latLng);
 
                 let value = this._customGetVal ? this._customGetVal(this._originalData[index]) : 1;
-
-                let color = this._stastics.mapValue2Color(value);
-
+                let color = this._stastics.mapValue2Color(value, true, this._colors);
                 const radius = 5;
 
                 // 默认绘制红色点
                 this._ctx.beginPath();
-                this._ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI, false);
+                this._ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI, true);
                 // 亮黄色
                 this._ctx.fillStyle = color;
                 this._ctx.fill();
@@ -173,7 +187,7 @@ export function initCanvasLayer() {
             // 如果有鼠标悬停的点，绘制为蓝色高亮
             if (this._hoveredPoint) {
                 this._ctx.beginPath();
-                this._ctx.arc(this._hoveredPoint.x, this._hoveredPoint.y, radius + 5, 0, 2 * Math.PI, false);
+                this._ctx.arc(this._hoveredPoint.x, this._hoveredPoint.y, radius + 5, 0, 2 * Math.PI, true);
                 this._ctx.strokeStyle = 'yellow';
                 this._ctx.lineWidth = 5;
                 // 虚线
@@ -256,10 +270,11 @@ export function initCanvasLayer() {
             const colors = [];
 
             for (let i = 0; i < grades.length - 1; i++) {
-                colors.push(this._stastics.mapValue2Color(grades[i]));
+                colors.push(this._stastics.mapValue2Color(grades[i], true, this._colors));
             }
-            console.log(colors);
-            console.log(this._stastics.mapValue2Color(0));
+
+            console.log(this._stastics.mapValue(502));
+            console.log(this._stastics)
 
             // labels.push('<h4>Legend</h4>');
             for (let i = 0; i < grades.length - 1; i++) {

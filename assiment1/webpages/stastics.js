@@ -28,17 +28,20 @@ export class Stastics{ // 单值统计
     }
 
     // 根据内置的统计值进行值映射
-    mapValue(value){ // 0-1 映射
-        // console.log(value, this._min, this._max);
-        return (value - this._min) / (this._max - this._min);
+    mapValue(value, isReverse = false){
+        if(isReverse){
+            return 1 - (value - this._min) / (this._max - this._min);
+        }else{
+            return (value - this._min) / (this._max - this._min);
+        }
     }
 
     /**
      * 支持简易的离散值映射
      */
-    mapValue2Color(value, isReverse = true, colors = defaultColors){
-        const colorIndex = Math.floor(this.mapValue(value) * colors.length);
-        return colors[isReverse ? colors.length - colorIndex - 1 : colorIndex];
+    mapValue2Color(value, isReverse = false, colors = defaultColors){
+        let index = Math.floor(this.mapValue(value, isReverse) * (colors.length - 1));
+        return colors[index];
     }
 
     getGrades(num){ // 获取分级
