@@ -126,17 +126,17 @@ def getTravelTimeDistribution3():
     # 显示
     plt.show()
 
-
-
-
-
-
-
-
-
-
-
-
+def task3():
+    # Q1
+    getDepartureTrips()
+    # Q2
+    getStationTrips()
+    # Q3
+    getTripDistanceDistribution()
+    # Q4
+    getTravelTimeDistribution()
+    getTravelTimeDistribution2()
+    getTravelTimeDistribution3()
 
 if __name__ == "__main__":
     # Q1

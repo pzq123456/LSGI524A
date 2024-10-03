@@ -253,8 +253,7 @@ export function initCanvasLayer() {
             legend.onAdd = this._legendHelper.bind(this);
 
             legend.update = function () {
-                this._legend._container.innerHTML = '';
-                this._legend._container.appendChild(this._legendHelper());
+                this._legend._container.innerHTML = this._legendHelper().innerHTML;
             }.bind(this);
 
             return this._legend = legend;
@@ -265,18 +264,13 @@ export function initCanvasLayer() {
             const labels = [];
             let from, to;
 
-            const grades = this._stastics.getGrades(5);
-            console.log(grades);
+            const grades = this._stastics.getGrades(this._colors.length);
             const colors = [];
 
             for (let i = 0; i < grades.length - 1; i++) {
                 colors.push(this._stastics.mapValue2Color(grades[i], true, this._colors));
             }
 
-            console.log(this._stastics.mapValue(502));
-            console.log(this._stastics)
-
-            // labels.push('<h4>Legend</h4>');
             for (let i = 0; i < grades.length - 1; i++) {
                 from = Math.round(grades[i]);
                 to = Math.round(grades[i + 1]);

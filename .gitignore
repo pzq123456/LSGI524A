@@ -1,5 +1,6 @@
 info/
 assiment1/data/*
 !assiment1/data/station_cleaned.csv
+!assiment1/data/clustered_bike_stations_with_clusters.csv
 .venv/
 __pycache__/

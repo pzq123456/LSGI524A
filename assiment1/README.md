@@ -12,10 +12,7 @@ First, parallel processing was implemented using the `dask` framework, which spl
 
 These methods reduced the total execution time to 4.92 seconds.
 
-## pre-processing
-
-## data analysis
-
-## visualization
-
-## clustering
+What to Submit:
+(1) A report in .pdf format containing your answers to all the above tasks, named as your student ID + name.
+(2) A .py file containing your codes for all four tasks in this assignment, named as your student ID + name.
+Please submit student ID_name.zip (zipped report and code) via PolyU Blackboard. The due date for this assignment is 1st November 2024, 11:59 PM.
