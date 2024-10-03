@@ -71,6 +71,7 @@ I have make a simple web page to show the distribution of the number of departur
 
 ### (3) What is the distribution of the trip distance (measured as straight-line Euclidean distance)? What will you conclude from this distribution? 
 ![](./imgs/t3q3.png)
+> Figure 4: The distribution of the trip distance
 
 Mean distance is about 2500 meters. Most trips are short, and the number of trips decreases as the distance increases. 
 
@@ -79,18 +80,18 @@ Mean distance is about 2500 meters. Most trips are short, and the number of trip
 ### (4) What is the distribution of the travel time (i.e., trip duration)?
 1. For duration : 
     ![](./imgs/t3q4.png)
-    > Figure 2: The distribution of the travel time (i.e., trip duration). The x-axis represents the travel time, and the y-axis represents the frequency of trips.
+    > Figure 5: The distribution of the travel time (i.e., trip duration). The x-axis represents the travel time, and the y-axis represents the frequency of trips.
 
     We can find that the most frequent travel time is around 500 seconds, and the distribution is right-skewed. Most trips are short, and the number of trips decreases as the travel time increases.
 
 2. For start and end time : 
     ![](./imgs/t3q4_2.png)
 
-    > Figure 3: The distribution of the start and end time of trips. The x-axis represents the time, and the y-axis represents the frequency of trips. More light color represents more trips.
+    > Figure 6: The distribution of the start and end time of trips. The x-axis represents the time, and the y-axis represents the frequency of trips. More light color represents more trips.
 
     ![](./imgs/t3q4_3.png)
 
-    > Figure 4: The heatmap of the start and end time of trips. The x-axis represents the start time, and the y-axis represents the end time. The color represents the number of trips. More light color represents more trips.
+    > Figure 7: The heatmap of the start and end time of trips. The x-axis represents the start time, and the y-axis represents the end time. The color represents the number of trips. More light color represents more trips.
 
     We can find that there are two peaks at around 8 am and 5 pm, which is consistent with the results of the first question. Most trips are short, in another word, most trips have very close start and end times, and that is why the heatmap is mainly concentrated on the diagonal.
 
@@ -186,7 +187,7 @@ Please visualize the clusters using matplotlib or any Python packages you prefer
 
 <img src="./imgs/cluster.png" width="60%" height="60%" alt="Figure 5: The clustering results of bike stations in Chicago. The color represents different clusters." align=center />
 
-> Figure 5: The clustering results of bike stations in Chicago. The color represents different clusters.
+> Figure 8: The clustering results of bike stations in Chicago. The color represents different clusters.
 
 You can visit it [here](https://pzq123456.github.io/LSGI524A/assiment1/webpages/index.html) for more details. Try to choose the cluster layer to see the clustering results.
 
