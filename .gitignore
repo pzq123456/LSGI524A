@@ -2,5 +2,8 @@ info/
 assiment1/data/*
 !assiment1/data/station_cleaned.csv
 !assiment1/data/clustered_bike_stations_with_clusters.csv
+assiment2/data/*
+
 .venv/
 __pycache__/
+.DS_Store

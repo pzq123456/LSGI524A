@@ -1,0 +1,17 @@
+# LSGI524A Assignment 2 : Preprocessing and Exploratory Data Analysis of Large-Scale Taxi GPS Traces
+> - PanZhiQing 24037665g 
+> - repo : https://github.com/pzq123456/LSGI524A/tree/main/assiment2
+
+## (1) How many unique taxis are there in this dataset, and how many trips are recorded?
+
+## (2) What is the distribution of the number of trips per taxi? Who are the top performers?
+
+## (3) How does the daily trip count (i.e., number of trips per day) change throughout the year? Any rhythm or seasonality?
+
+## (4) What is the distribution of the number of departure trips at different locations (i.e., intersections)? What about the distribution of arrival trips? What will you conclude from these two distributions?
+
+## (5) How does the number of trips change over time in a day? (You will be given three dates randomly selected from the dataset, and then plot the hourly variation of trips from the perspective of local time).
+
+## (6) What is the probability distribution of the trip distance (measured as straight-line distance)? How about travel time (i.e., trip duration)? What will you conclude from these two distributions?
+
+## References
