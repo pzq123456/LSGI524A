@@ -3,6 +3,7 @@ assiment1/data/*
 !assiment1/data/station_cleaned.csv
 !assiment1/data/clustered_bike_stations_with_clusters.csv
 assiment2/data/*
+!assiment2/data/Random_Days_LSGI524A_Assignment2_202425.xlsx
 
 .venv/
 __pycache__/
