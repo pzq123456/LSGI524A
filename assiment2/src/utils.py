@@ -25,6 +25,8 @@ times = [
     1293840007
 ]
 
+# 1300492560
+
 # 处理 unix time
 def unix2time(x):
     return datetime.datetime.fromtimestamp(x)
@@ -64,5 +66,5 @@ def unzipbz2(PATH, SAVE_PATH):
     parallel_decompress_bz2(PATH, SAVE_PATH)
 
 if __name__ == '__main__':
-    for t in times:
-        print(unix2time(t))
+
+    print(unix2time(1300492560))
