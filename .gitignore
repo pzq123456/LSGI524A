@@ -5,6 +5,13 @@ assiment1/data/*
 assiment2/data/*
 !assiment2/data/Random_Days_LSGI524A_Assignment2_202425.xlsx
 
+!assiment2/data/intersections.csv
+!assiment2/data/daily_trip_count.csv
+!assiment2/data/trip_count_per_taxi.csv
+
+!assiment2/data/departure_trip_count.csv
+!assiment2/data/arrival_trip_count.csv
+
 .venv/
 __pycache__/
 .DS_Store
