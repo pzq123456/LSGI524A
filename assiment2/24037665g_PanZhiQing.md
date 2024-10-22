@@ -63,4 +63,7 @@ Figure 3: Daily trip count throughout first quarter of the year
 
 ## (6) What is the probability distribution of the trip distance (measured as straight-line distance)? How about travel time (i.e., trip duration)? What will you conclude from these two distributions?
 
+![image](./img/p5.png)
+![image](./img/p6.png)
+
 ## References

@@ -1,14 +1,23 @@
 import os
 import dask.dataframe as dd
 from dask.diagnostics import ProgressBar
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pyproj import Transformer
+from scipy.stats import norm
+
+
+transformer = Transformer.from_crs("EPSG:4326", "EPSG:26916", always_xy=True)
 
 # ./data/
 PARENT_PATH = os.path.join(os.path.dirname(__file__), '..', 'data') # path to data directory
 PATH1 = os.path.join(PARENT_PATH, 'taxi_id.csv.bz2') # path to the zipped file
 PATH2 = os.path.join(PARENT_PATH, 'intersections.csv') # path to the zipped file
+
+TEST = os.path.join(PARENT_PATH, 'test.csv') 
+SAVE_TEST = os.path.join(PARENT_PATH, 'test_save.csv') # path to the unzipped file
 
 SAVE_PATH1 = os.path.join(PARENT_PATH, 'taxi_id.csv') # path to the unzipped file
 SAVE_PATH2 = os.path.join(PARENT_PATH, 'taxi_id_clean.csv') # path to the cleaned file
@@ -18,17 +27,10 @@ SAVE_PATH4 = os.path.join(PARENT_PATH, 'daily_trip_count.csv') # path to the dai
 SAVE_PATH5 = os.path.join(PARENT_PATH, 'departure_trip_count.csv') # path to the departure trip count file
 SAVE_PATH6 = os.path.join(PARENT_PATH, 'arrival_trip_count.csv') # path to the arrival trip count file
 
-# 指定列名
-taxi_columns = ['taxi_id', 'pick_up_time', 'drop_off_time', 'pick_up_intersection', 'drop_off_intersection']
-inter_columns = ['id', 'latitude', 'longitude']
+SAVE_PATH7 = os.path.join(PARENT_PATH, 'distance_duration.csv') # path to the distance and duration file
 
-taxi_dtypes = {
-    'taxi_id': 'float64',
-    'pick_up_time': 'float64',  # 原始的 Unix 时间戳
-    'drop_off_time': 'float64',  # 原始的 Unix 时间戳
-    'pick_up_intersection': 'float64',
-    'drop_off_intersection': 'float64'
-}
+
+
 
 # Q1 : How many unique taxis are there in this dataset, and how many trips are recorded?
 def q1(stage_name):
@@ -197,13 +199,158 @@ def visualize_q4(departure_trip_count, arrival_trip_count):
 
     plt.show()
 
+def q6():
+    # (6) What is the probability distribution of the trip distance (measured as straight-line distance)? How about travel time (i.e., trip duration)? What will you conclude from these two distributions?
+    getProjectedDistance_Duration(cleaned_taxi_df, SAVE_PATH7)
+
+def visualize_q6(distance_duration):
+
+    # 拟合距离和时间的概率分布 并绘制 不绘制直方图 否则会很慢
+    distance = distance_duration['distance']
+    duration = distance_duration['duration']
+
+    with ProgressBar():
+        distance_dist = calculate_probability_distribution(distance)
+        duration_dist = calculate_probability_distribution(duration)
+    
+        # 根据拟合的概率分布生成随机数
+        distance_sample = distance_dist.rvs(size=1000)
+        duration_sample = duration_dist.rvs(size=1000)
+
+        # 绘制距离和时间的概率密度函数
+        # 距离
+        plt.figure(figsize=(12, 6))
+        # sns.kdeplot(distance, label='Distance')
+        sns.kdeplot(distance_sample, label='Fitted Distance')
+        plt.title('Probability Distribution of Trip Distance')
+        plt.xlabel('Distance(m)')
+        plt.ylabel('Density')
+        plt.legend()
+        plt.show()
+
+        # 时间
+        plt.figure(figsize=(12, 6))
+        # sns.kdeplot(duration, label='Duration')
+        sns.kdeplot(duration_sample, label='Fitted Duration')
+        plt.title('Probability Distribution of Trip Duration')
+        plt.xlabel('Duration(s)')
+        plt.ylabel('Density')
+        plt.legend()
+        plt.show()
 
 
+
+def calculate_probability_distribution(data):
+    # 计算均值和标准差
+    mean = data.mean()
+    std = data.std()
+    # 使用正态分布拟合数据
+    dist = norm(loc=mean, scale=std)
+    return dist
+    
+
+
+
+
+
+
+
+
+
+
+
+def getProjectedDistance_Duration(df, SAVE_TEST):
+    # 读取数据
+    meta = pd.DataFrame({
+            'taxi_id': pd.Series(dtype='float64'),
+            'pick_up_time': pd.Series(dtype='float64'),
+            'drop_off_time': pd.Series(dtype='float64'),
+            'pick_up_intersection': pd.Series(dtype='float64'),
+            'drop_off_intersection': pd.Series(dtype='float64'),
+            'latitude_from': pd.Series(dtype='float64'),
+            'longitude_from': pd.Series(dtype='float64'),
+            'latitude_to': pd.Series(dtype='float64'),
+            'longitude_to': pd.Series(dtype='float64'),
+            'from_x_transformed': pd.Series(dtype='float64'),
+            'from_y_transformed': pd.Series(dtype='float64'),
+            'to_x_transformed': pd.Series(dtype='float64'),
+            'to_y_transformed': pd.Series(dtype='float64'),
+            'distance': pd.Series(dtype='int64'),
+            'duration': pd.Series(dtype='int64')
+        })
+    
+    # 使用 map_partitions 逐块转换坐标并计算距离
+
+
+    # 显示进度条并保存结果
+    # with ProgressBar():
+    #     df.to_csv(SAVE_TEST, index=False, single_file=True)
+    with ProgressBar():
+        df = df.map_partitions(transform_calculate_distance_and_duration, meta=meta)
+        # 仅仅保留最后两列
+        df = df[['distance', 'duration']]
+        # 都转化为 int 类型
+        df = df.astype('int64')
+        df = df.compute().to_csv(SAVE_TEST, index=False)
+
+
+# 定义一个用于在分块中处理坐标转换和距离计算的函数
+def transform_calculate_distance_and_duration(partition):
+    # taxi_id,pick_up_time,drop_off_time,pick_up_intersection,drop_off_intersection
+    # inter_df 1,40.706991,-74.01794
+
+    # 将 pick_up_intersection 和 drop_off_intersection 转换为经纬度 同时保留原始的 pick_up_intersection 和 drop_off_intersection
+
+    # 从 inter_df 中获取经纬度
+    partition = partition.merge(inter_df, left_on='pick_up_intersection', right_on='id', how='left')
+    partition = partition.rename(columns={'latitude': 'latitude_from', 'longitude': 'longitude_from'})
+    partition = partition.drop(columns=['id'])
+
+    partition = partition.merge(inter_df, left_on='drop_off_intersection', right_on='id', how='left')
+    partition = partition.rename(columns={'latitude': 'latitude_to', 'longitude': 'longitude_to'})
+    partition = partition.drop(columns=['id'])
+
+    # 将经纬度转换为投影坐标
+    from_x, from_y = transformer.transform(partition['latitude_from'].values, partition['longitude_from'].values)
+    to_x, to_y = transformer.transform(partition['latitude_to'].values, partition['longitude_to'].values)
+
+
+    # 计算欧氏距离
+    distance = ((to_x - from_x) ** 2 + (to_y - from_y) ** 2) ** 0.5
+    # 计算时间
+    duration = partition['drop_off_time'] - partition['pick_up_time']
+
+    partition['from_x_transformed'] = from_x
+    partition['from_y_transformed'] = from_y
+    partition['to_x_transformed'] = to_x
+    partition['to_y_transformed'] = to_y
+
+    partition['distance'] = distance
+    partition['duration'] = duration
+
+    return partition
 
 if __name__ == '__main__':
+    # 指定列名
+    taxi_columns = ['taxi_id', 'pick_up_time', 'drop_off_time', 'pick_up_intersection', 'drop_off_intersection']
+    inter_columns = ['id', 'latitude', 'longitude']
+    taxi_dtypes = {
+        'taxi_id': 'float64',
+        'pick_up_time': 'float64',  # 原始的 Unix 时间戳
+        'drop_off_time': 'float64',  # 原始的 Unix 时间戳
+        'pick_up_intersection': 'float64',
+        'drop_off_intersection': 'float64'
+    }
+    inter_dtypes = {
+        'id': 'float64',
+        'latitude': 'float64',
+        'longitude': 'float64'
+    }
     # 使用Dask读取CSV并指定列名
     taxi_df = dd.read_csv(SAVE_PATH1, header=None, names=taxi_columns, on_bad_lines='skip', dtype=taxi_dtypes)
-    inter_df = dd.read_csv(PATH2, header=None, names=inter_columns)
+    inter_df = pd.read_csv(PATH2, header=None, names=inter_columns, on_bad_lines='skip', dtype=inter_dtypes)
+
+
 
 
     # q1('before')
@@ -220,9 +367,13 @@ if __name__ == '__main__':
     # visualize_q3(daily_trip_count)
 
     # q4()
-    departure_trip_count = pd.read_csv(SAVE_PATH5, header= 0) # pandas dataframe
-    arrival_trip_count = pd.read_csv(SAVE_PATH6, header= 0) # pandas dataframe
-    visualize_q4(departure_trip_count, arrival_trip_count)
+    # departure_trip_count = pd.read_csv(SAVE_PATH5, header= 0) # pandas dataframe
+    # arrival_trip_count = pd.read_csv(SAVE_PATH6, header= 0) # pandas dataframe
+    # visualize_q4(departure_trip_count, arrival_trip_count)
+
+    # q6()
+    distance_duration = dd.read_csv(SAVE_PATH7, header= 0) # pandas dataframe
+    visualize_q6(distance_duration)
 
 
 
