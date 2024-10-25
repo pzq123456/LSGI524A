@@ -15,3 +15,7 @@ assiment2/data/*
 .venv/
 __pycache__/
 .DS_Store
+
+cache
+
+output
