@@ -7,10 +7,18 @@ import random
 import time
 
 from tqdm import tqdm
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
+
+from env import get_all
 
 PATH = os.path.join(os.path.dirname(__file__))
 
 SAVE_PATH = os.path.join(PATH, '../', 'output', 'log')
+
+if not os.path.exists(SAVE_PATH):
+    os.makedirs(SAVE_PATH)
 
 checkpoint_file = os.path.join(SAVE_PATH, 'checkpoint.json')
 
@@ -69,6 +77,40 @@ def load_checkpoint():
   
 def get_logger():
     return logger
+
+def send_email(subject, body, log_file_path):
+
+    from_email, from_password, to_email = get_all()
+
+    msg = MIMEMultipart()
+    msg['From'] = from_email
+    msg['To'] = to_email
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(body, 'plain'))
+
+    with open(log_file_path, 'rb') as f:
+        attachment = MIMEText(f.read(), 'base64', 'utf-8')
+        attachment.add_header('Content-Disposition', 'attachment', filename=os.path.basename(log_file_path))
+        msg.attach(attachment)
+
+    try:
+        # 改为使用SSL
+        server = smtplib.SMTP_SSL('smtp.163.com', 465)
+        server.login(from_email, from_password)
+        text = msg.as_string()
+        server.sendmail(from_email, to_email, text)
+        server.quit()
+        logging.info("邮件发送成功")
+    except Exception as e:
+        logging.error(f"邮件发送失败: {e}")
+
+
+if __name__ == "__main__":
+    # 测试日志
+    logger.info("测试日志")
+    # 测试发送邮件
+    send_email("测试邮件", "这是一封测试邮件", os.path.join(SAVE_PATH, 'log.txt'))
 
 # # 读取已完成任务
 # def load_completed_tasks():

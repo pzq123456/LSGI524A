@@ -10,9 +10,11 @@ import geopandas as gpd
 from shapely.geometry import Point
 
 import os
-from tqdm import tqdm
 
-from log import get_logger, save_checkpoint
+import dask.dataframe as dd
+from dask.diagnostics import ProgressBar
+
+from log import get_logger, save_checkpoint, send_email
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -20,6 +22,8 @@ PATH1 = os.path.join(PATH, '../', 'data', 'bike162.csv')
 PATH2 = os.path.join(PATH, '../', 'data', 'track16.pickle')
 
 SAVE_PATH = os.path.join(PATH, '../', 'output', 'StreetMatching')
+
+LOG_PATH = os.path.join(PATH,'../', 'output', 'log') # 日志文件路径
 
 FILENAME = 'ID_${id}.shp' # 文件名模板
 
@@ -177,21 +181,29 @@ def test():
     # print file path
     print(os.path.join(SAVE_PATH, FILENAME.replace('${id}', str(ID))))
 
+def process_chunk(chunk, df):
+    for i in chunk:
+        process_id(i, df)
+        if i % 5000 == 0:
+            send_email(f"任务进度 - ID: {i}", f"已完成ID: {i}", os.path.join(LOG_PATH, 'log.txt'))
 
-# 读取原始数据和 pickle 文件
 if __name__ == "__main__":
     logger = get_logger()
-
     originData = pd.read_csv(PATH1)
-
     with open(PATH2, 'rb') as file:
         data = pickle.load(file)
-    
-    df = pd.DataFrame(data).iloc[:, 1:]
-
-    # process_id(70000, df)
+        df = pd.DataFrame(data).iloc[:, 1:]
 
     total_iterations = 97867 - 70000 + 1
+    iterations = range(70000, 97867 + 1)
 
-    for i in tqdm(range(70000, 97867 + 1)):
-        process_id(i, df)
+    # 创建Dask数据帧
+    dask_df = dd.from_pandas(pd.DataFrame({'iterations': iterations}), npartitions=4)
+
+    # 计算任务
+    with ProgressBar():
+        dask_df.iterations.map_partitions(lambda chunk: process_chunk(chunk, df)).compute()
+    # # 时间
+    current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+    send_email("任务完成", f"任务完成时间: {current_time}", os.path.join(LOG_PATH, 'log.txt'))

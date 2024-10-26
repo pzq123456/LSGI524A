@@ -16,6 +16,8 @@ assiment2/data/*
 __pycache__/
 .DS_Store
 
+.env
+
 cache
 
 output
