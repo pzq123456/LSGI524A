@@ -1,4 +1,4 @@
-# LSGI524A Assignment 2 : Preprocessing and Exploratory Data Analysis of Large-Scale Taxi GPS Traces
+# [LSGI524A Assignment 2](https://github.com/pzq123456/LSGI524A/tree/main/assiment2) : Preprocessing and Exploratory Data Analysis of Large-Scale Taxi GPS Traces
 > - PanZhiQing 24037665g 
 > - repo : https://github.com/pzq123456/LSGI524A/tree/main/assiment2
 
@@ -58,12 +58,22 @@ Figure 3: Daily trip count throughout first quarter of the year
 ## (4) What is the distribution of the number of departure trips at different locations (i.e., intersections)? What about the distribution of arrival trips? What will you conclude from these two distributions?
 
 ![image](./img/p4.png)
+Figure 4: Bar chart of the number of departure trips at different intersections ID
+![image](./img/p7.png)
+Figure 5: Distribution of the number of departure trips at different locations(Lighter color means more trips)
+![image](./img/p8.png)
+Figure 6: Distribution of the number of arrival trips at different locations(Lighter color means more trips)
+
+> - You can check the website for the interactive map: https://pzq123456.github.io/LSGI524A/assiment2/webpages/index.html
+> - the visualization code can be found in the link: https://github.com/pzq123456/LSGI524A/tree/main/assiment2/webpages
 
 ## (5) How does the number of trips change over time in a day? (You will be given three dates randomly selected from the dataset, and then plot the hourly variation of trips from the perspective of local time).
 
 ## (6) What is the probability distribution of the trip distance (measured as straight-line distance)? How about travel time (i.e., trip duration)? What will you conclude from these two distributions?
 
 ![image](./img/p5.png)
+Figure 7: Probability distribution of the trip distance
 ![image](./img/p6.png)
+Figure 8: Probability distribution of the trip duration
 
 ## References
