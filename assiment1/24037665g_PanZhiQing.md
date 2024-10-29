@@ -1,6 +1,7 @@
 # Report for Assiment 1 
 > - PanZhiQing 24037665g 
 > - repo : https://github.com/pzq123456/LSGI524A/tree/main/assiment1
+
 ## Task1 [25 points]:  
 ### (1) How many valid bicycle trips were documented on 25 July 2019? 
 20187
@@ -73,18 +74,23 @@ I have make a simple web page to show the distribution of the number of departur
 ![](./imgs/t3q3.png)
 > Figure 4: The distribution of the trip distance
 
-Mean distance is about 2500 meters. Most trips are short, and the number of trips decreases as the distance increases. 
+Mean distance is about 2500 meters. Most trips are short, and the number of trips decreases as the distance increases. The trip distance shows a significant long-tail distribution, indicating that shared bicycles are mainly used for short trips rather than long trips. Riding within two kilometers is the comfort zone for most people, and very few people choose to ride shared bicycles for more than 5 km.
 
 <div STYLE="page-break-after: always;"></div>
 
 ### (4) What is the distribution of the travel time (i.e., trip duration)?
 1. For duration : 
+
     ![](./imgs/t3q4.png)
+
     > Figure 5: The distribution of the travel time (i.e., trip duration). The x-axis represents the travel time, and the y-axis represents the frequency of trips.
 
     We can find that the most frequent travel time is around 500 seconds, and the distribution is right-skewed. Most trips are short, and the number of trips decreases as the travel time increases.
 
+<div STYLE="page-break-after: always;"></div>
+
 2. For start and end time : 
+
     ![](./imgs/t3q4_2.png)
 
     > Figure 6: The distribution of the start and end time of trips. The x-axis represents the time, and the y-axis represents the frequency of trips. More light color represents more trips.
@@ -98,10 +104,9 @@ Mean distance is about 2500 meters. Most trips are short, and the number of trip
 <div STYLE="page-break-after: always;"></div>
 
 
-## Task4 [25 points]:  
-Suppose the bike-sharing operator plans to manage efficiently by dividing bike stations into multiple service zones based on the distance between stations. Some clustering algorithms (e.g., DBSCAN, SVM) could be useful for the operator.  
+## Task4 [25 points]: Suppose the bike-sharing operator plans to manage efficiently by dividing bike stations into multiple service zones based on the distance between stations. Some clustering algorithms (e.g., DBSCAN, SVM) could be useful for the operator.  
 
-Please  refer  to  this  website  to  cluster  all  bike  stations  in  Chicago  using  the  Density-based  Spatial Clustering of Applications with Noise (DBSCAN) algorithm packaged in scikit-learn. The maximum distance between two stations is 600 meters, and the number of samples in a neighborhood for a point to be considered as a core point is 2 stations. The other parameters are set as default. Please list the number of clusters and the station ids in each cluster in your report.  
+> - Please  refer  to  this  website  to  cluster  all  bike  stations  in  Chicago  using  the  Density-based  Spatial Clustering of Applications with Noise (DBSCAN) algorithm packaged in scikit-learn. The maximum distance between two stations is 600 meters, and the number of samples in a neighborhood for a point to be considered as a core point is 2 stations. The other parameters are set as default. Please list the number of clusters and the station ids in each cluster in your report.  
 
 The number of clusters is 42, and the station ids in each cluster are as follows:
 ```
@@ -180,8 +185,7 @@ The number of clusters is 42, and the station ids in each cluster are as follows
 
 <div STYLE="page-break-after: always;"></div>
 
-## Bonus for Task4 [+10 points]:  
-Please visualize the clusters using matplotlib or any Python packages you prefer. Here is a reference about how to visualize clusters. If you complete this Bonus part, please embed the figure into your report.  
+## Bonus for Task4 [+10 points]: Please visualize the clusters using matplotlib or any Python packages you prefer. Here is a reference about how to visualize clusters. If you complete this Bonus part, please embed the figure into your report.  
 
 <!-- ![](./imgs/cluster.png) -->
 
@@ -193,4 +197,8 @@ You can visit it [here](https://pzq123456.github.io/LSGI524A/assiment1/webpages/
 
 For better visualization, I wrote a simple random color generator. The generator uses the HSL color space to control the color of adjacent categories in different hues, and uses a seed to ensure that the generated colors are the same each time. You can check the [source code](https://github.com/pzq123456/LSGI524A/blob/9c8977566ddef15294ed6decdd2c6611fdc86c8b/assiment1/webpages/main.js#L132-L180) for more details.
 
-Because the minimum category is only 2 instead of 3, otherwise we can use the point set centroid algorithm to get the center of each category, and use the convex hull algorithm to get the boundary of each category.
+We can find a super cluster (0, red in the figure) in the east of the city, especially in the downtown area (near the lake harbor). Considering the characteristics of the DBSCAN algorithm, this cluster may be due to the close distance between these stations, which also indirectly indicates that the traffic in the downtown area is better. We can extract the boundary of this cluster as a service area. Other clusters may be due to the long distance between stations or poor traffic between stations, and these stations can be assigned to different service areas.
+
+Because the minimum category is only 2 instead of 3, otherwise we can use the point set centroid algorithm to get the center of each category, and use the convex hull algorithm to get the boundary of each category. The boundary of each category can be used as a service area.
+
+
