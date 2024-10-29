@@ -11,7 +11,7 @@ assiment2/data/*
 
 !assiment2/data/departure_trip_count.csv
 !assiment2/data/arrival_trip_count.csv
-
+!assiment2/data/Random_Days_LSGI524A_Assignment2_202425.csv
 .venv/
 __pycache__/
 .DS_Store
