@@ -247,17 +247,6 @@ def calculate_probability_distribution(data):
     # 使用正态分布拟合数据
     dist = norm(loc=mean, scale=std)
     return dist
-    
-
-
-
-
-
-
-
-
-
-
 
 def getProjectedDistance_Duration(df, SAVE_TEST):
     # 读取数据
@@ -330,6 +319,64 @@ def transform_calculate_distance_and_duration(partition):
 
     return partition
 
+def q5():
+    # 2011/3/6,2011/3/12,2011/9/1
+    # You will be given three dates randomly selected from the dataset, and then plot the hourly variation of trips from the perspective of local time
+    
+    # 查看 cleaned_taxi_df 的数据结构
+    # print(cleaned_taxi_df.head())
+
+    # 选择三个日期
+    dates = ['2011-03-06', '2011-03-12', '2011-09-01']
+    with ProgressBar():
+        for date in dates:
+            print(f'Processing date: {date}')
+            # 提取指定日期整日的记录
+            daily_data = get_daily_data(cleaned_taxi_df, date)
+            # save to csv
+            plot_hourly_trip_count(daily_data, date)
+            # print(f'Date: {date}, Number of trips: {len(daily_data)}')
+
+def plot_hourly_trip_count(daily_data,date):
+    # date 用于标题
+    # 提取小时
+    daily_data['hour'] = dd.to_datetime(daily_data['pick_up_time'], unit='s').dt.hour
+    # 计算每小时的行程数量
+    hourly_trip_count = daily_data['hour'].value_counts().compute()
+    # 按照时间排序
+    hourly_trip_count = hourly_trip_count.sort_index().reset_index()
+    # print(hourly_trip_count.head())
+    # 绘制每小时的行程数量
+    plt.figure(figsize=(12, 6))
+    sns.barplot(data=hourly_trip_count, x='hour', y='count')
+    # 绘制趋势线
+    sns.lineplot(data=hourly_trip_count, x='hour', y='count', color='red')
+    plt.title(f'Hourly Trip Count on {date}')
+    plt.xlabel('Hour')
+    plt.ylabel('Trip Count')
+    # plt.show() # 由于在远程服务器上无法显示图形，因此将图形保存为文件
+    # 由于在远程服务器上无法显示图形，因此将图形保存为文件
+    plt.savefig(os.path.join(PARENT_PATH,"..","img", f'hourly_trip_count_{date}.png'))
+    print(f'Hourly trip count on {date} saved.')
+
+
+# 定义帮助函数，提取指定日期整日的记录
+def get_daily_data(df, date):
+    # time range 前一天的 0 点到后一天的 0 点
+    start_time = pd.Timestamp(date).timestamp()
+    end_time = pd.Timestamp(date) + pd.Timedelta(days=1)
+    end_time = end_time.timestamp()
+    # 提取指定日期的记录
+    daily_data = df[(df['pick_up_time'] >= start_time) & (df['pick_up_time'] < end_time)]
+    return daily_data
+#    taxi_id  pick_up_time  drop_off_time  pick_up_intersection  drop_off_intersection
+# 0      1.0  1.293840e+09   1.293841e+09                 952.0                 2021.0
+# 1      2.0  1.293840e+09   1.293841e+09                1372.0                 2815.0
+# 2      3.0  1.293840e+09   1.293840e+09                 856.0                 1149.0
+# 3      4.0  1.293840e+09   1.293840e+09                2060.0                 1956.0
+# 4      5.0  1.293840e+09   1.293841e+09                2506.0                 1332.0
+    # 提取指定日期的记录
+
 if __name__ == '__main__':
     # 指定列名
     taxi_columns = ['taxi_id', 'pick_up_time', 'drop_off_time', 'pick_up_intersection', 'drop_off_intersection']
@@ -371,9 +418,12 @@ if __name__ == '__main__':
     # arrival_trip_count = pd.read_csv(SAVE_PATH6, header= 0) # pandas dataframe
     # visualize_q4(departure_trip_count, arrival_trip_count)
 
+    q5()
+
+
     # q6()
-    distance_duration = dd.read_csv(SAVE_PATH7, header= 0) # pandas dataframe
-    visualize_q6(distance_duration)
+    # distance_duration = dd.read_csv(SAVE_PATH7, header= 0) # pandas dataframe
+    # visualize_q6(distance_duration)
 
 
 

@@ -68,12 +68,28 @@ Figure 6: Distribution of the number of arrival trips at different locations(Lig
 > - the visualization code can be found in the link: https://github.com/pzq123456/LSGI524A/tree/main/assiment2/webpages
 
 ## (5) How does the number of trips change over time in a day? (You will be given three dates randomly selected from the dataset, and then plot the hourly variation of trips from the perspective of local time).
+> - 16,PAN,Zhiqing,2011/3/6,2011/3/12,2011/9/1
+
+<!-- assiment2\img\hourly_trip_count_2011-03-06.png -->
+### 2011/3/6
+![image](./img/hourly_trip_count_2011-03-06.png)
+Figure 7: Hourly variation of trips on 2011/3/6
+
+### 2011/3/12
+![image](./img/hourly_trip_count_2011-03-12.png)
+Figure 8: Hourly variation of trips on 2011/3/12
+
+### 2011/9/1
+![image](./img/hourly_trip_count_2011-09-01.png)
+Figure 9: Hourly variation of trips on 2011/9/1
+
+
 
 ## (6) What is the probability distribution of the trip distance (measured as straight-line distance)? How about travel time (i.e., trip duration)? What will you conclude from these two distributions?
 
 ![image](./img/p5.png)
-Figure 7: Probability distribution of the trip distance
+Figure 10: Probability distribution of the trip distance
 ![image](./img/p6.png)
-Figure 8: Probability distribution of the trip duration
+Figure 11: Probability distribution of the trip duration
 
 ## References
