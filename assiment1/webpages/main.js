@@ -2,10 +2,48 @@ import { initDom } from './utils.js';
 import { baseMapInfos } from './baseMaps.js';
 import { initCanvasLayer } from './canvaslayer.js';
 import { getBaseMap } from './utils.js';
+import { initGeoJsonLayer } from './geojsonlayer.js';
 
 import * as RVGeo from './rvgeo.js';
 
-console.log(RVGeo);
+const convexHull = RVGeo.convexHull;
+const Point = RVGeo.Point;
+
+// console.log(RVGeo);
+
+function rendomPoints(n) {
+    let points = [];
+    for (let i = 0; i < n; i++) {
+        points.push(new Point([Math.random() * 100, Math.random() * 100]));
+    }
+    return points;
+}
+
+// 帮助函数 将经纬度数组转化为点数组
+// latLonArray: [[lat1, lon1], [lat2, lon2], ...]
+function pointsFromLatLonArray(latLonArray) {
+    let points = [];
+    for (let i = 0; i < latLonArray.length; i++) {
+        points.push(new Point(latLonArray[i].reverse()));
+    }
+    return points;
+}
+
+// 帮助函数 将点数组转化为经纬度数组
+// points: [Point1, Point2, ...]
+function latLonArrayFromPoints(points) {
+    let latLonArray = [];
+    for (let i = 0; i < points.length; i++) {
+        latLonArray.push(points[i].coordinates);
+    }
+    return latLonArray;
+}
+
+
+let points = rendomPoints(10);
+// console.log(points);
+let hull = convexHull(points);
+console.log(latLonArrayFromPoints(hull));
 
 initDom(document.getElementById('map')); // set the map size to the screen size
 
@@ -20,6 +58,7 @@ let layerControl = L.control.layers(baseMaps).addTo(map);
 baseMaps["dark_all"].addTo(map);
 
 initCanvasLayer();
+initGeoJsonLayer();
 
 function customPopupRenderer(info){
     let res =  `<div>
@@ -48,20 +87,34 @@ const mycolors = [ // 红色基调的暖色调
 let generatedColors = generateDistinctColors(123456, 41);
 
 generatedColors.push('gray');
+const infoUpdate = function (props, data) {
+    const contents = props ? `<b>${props.name}</b><br />${props.count} charging stations` : 'Hover over a state';
+    this._div.innerHTML = `<h4>US EV Charging Stations</h4>${contents}`;
+}
+
+
+const geoJsonLayer = L.geoJsonLayer(infoUpdate);
 
 const canvasLayer1 = L.canvasLayer(customPopupRenderer);
 const canvasLayer2 = L.canvasLayer(customPopupRenderer);
 const canvasLayer3 = L.canvasLayer(customPopupRenderer);
 
+
 layerControl.addOverlay(canvasLayer1, 'departure');
 layerControl.addOverlay(canvasLayer2, 'arrival');
 layerControl.addOverlay(canvasLayer3, 'cluster');
+layerControl.addOverlay(geoJsonLayer, 'hull');
 
 
 canvasLayer2.setColors(mycolors);
-canvasLayer2.addTo(map);
-
 canvasLayer3.setColors(generatedColors);
+
+
+canvasLayer3.addTo(map);
+// geoJsonLayer.addTo(map);
+
+
+geoJsonLayer.setColors(generatedColors);
 
 layerControl.expand();
 
@@ -122,16 +175,106 @@ fetch('../data/clustered_bike_stations_with_clusters.csv')
             worker: true, // 使用 Web Worker 处理 CSV
 
             chunk: function(results, parser) {
-                // 同时向两个图层添加数据
+                
                 canvasLayer3.appendData(results.data, 
                     (d) => [parseFloat(d.lat), parseFloat(d.lon)],
                     (d) => parseInt(d.cluster));
+                
+                // 根据类别提取数据为数组
+                let clusters = {};
+                results.data.forEach(d => {
+                    let cluster = d.cluster;
+                    if (!clusters[cluster]) {
+                        clusters[cluster] = [];
+                    }
+                    clusters[cluster].push([parseFloat(d.lat), parseFloat(d.lon)]);
+                });
+
+                // console.log(clusters);
+
+                // 对每一个长度大于 2 且值
+                let hull = {};
+
+                for (let cluster in clusters) {
+                    let points = pointsFromLatLonArray(clusters[cluster]);
+                    if (points.length > 2) {
+                        hull[cluster] = latLonArrayFromPoints(convexHull(points));
+                    }else{
+                        hull[cluster] = points.map(p => p.coordinates);
+                    }
+                }
+
+                // 去除 -1 类别
+                // delete hull[-1];
+                geoJsonLayer.updateData(toGeoJson(hull));
             },
         });
     })
     .catch(error => {
         console.error('获取或解析 CSV 文件出错:', error);
 });
+
+function toGeoJson(data) {
+    // 计算多边形面积的函数
+    function calculateArea(polygon) {
+        if (polygon.length < 3) return 0; // 少于3个点的面积为0
+        let area = 0;
+        const n = polygon.length;
+
+        for (let i = 0; i < n; i++) {
+            const j = (i + 1) % n; // 下一个点
+            area += polygon[i][0] * polygon[j][1];
+            area -= polygon[j][0] * polygon[i][1];
+        }
+        return Math.abs(area) / 2;
+    }
+
+    let features = [];
+
+    // 先将簇按面积排序
+    let sortedClusters = Object.keys(data).sort((a, b) => {
+        const areaA = (data[a].length > 1) ? calculateArea(data[a]) : 0;
+        const areaB = (data[b].length > 1) ? calculateArea(data[b]) : 0;
+        return areaB - areaA; // 从大到小排序
+    });
+
+    for (let cluster of sortedClusters) {
+        if (data[cluster].length > 1) {
+            features.push({
+                "type": "Feature",
+                "properties": {
+                    "name": cluster,
+                    "count": cluster, // 簇的数量
+                    "area": calculateArea(data[cluster]), // 计算面积
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [data[cluster]],
+                },
+            });
+        } else {
+            features.push({
+                "type": "Feature",
+                "properties": {
+                    "name": cluster,
+                    "count": cluster, // 簇的数量
+                    "area": 0, // 单点簇的面积
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": data[cluster][0],
+                },
+            });
+        }
+    }
+
+    return {
+        "type": "FeatureCollection",
+        "features": features,
+    };
+}
+
+
 
 // Function to convert HSL to RGB
 function hslToRgb(h, s, l) {

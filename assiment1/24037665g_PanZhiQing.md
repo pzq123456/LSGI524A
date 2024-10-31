@@ -199,6 +199,11 @@ For better visualization, I wrote a simple random color generator. The generator
 
 We can find a super cluster (0, red in the figure) in the east of the city, especially in the downtown area (near the lake harbor). Considering the characteristics of the DBSCAN algorithm, this cluster may be due to the close distance between these stations, which also indirectly indicates that the traffic in the downtown area is better. We can extract the boundary of this cluster as a service area. Other clusters may be due to the long distance between stations or poor traffic between stations, and these stations can be assigned to different service areas.
 
-Because the minimum category is only 2 instead of 3, otherwise we can use the point set centroid algorithm to get the center of each category, and use the convex hull algorithm to get the boundary of each category. The boundary of each category can be used as a service area.
+Because the minimum category is only 2 instead of 3, otherwise we can use the point set centroid algorithm to get the center of each category, and use the convex hull algorithm to get the boundary of each category. The boundary of each category can be used as a service area. I have tried to visualize the boundary of each category. Check it onlie [here](https://pzq123456.github.io/LSGI524A/assiment1/webpages/index.html). 
+
+![](./imgs/t4.png)
+> Figure 9: The boundary of each cluster. The color represents different clusters.
+
+The boundary is not completely convex, but there are some concave areas. In this case, we can consider using the Alpha Complex algorithm based on the Delanuay triangulation to obtain the boundary. The specific implementation can refer to the Alpha Complex algorithm in https://pzq123456.github.io/RVGeo/dist/index.html (Click on the "Alpha Complex" button and then click on the "Run" button). The convex hull algorithm is also based on this package.
 
 
