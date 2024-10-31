@@ -3,6 +3,10 @@ import { baseMapInfos } from './baseMaps.js';
 import { initCanvasLayer } from './canvaslayer.js';
 import { getBaseMap } from './utils.js';
 
+import * as RVGeo from './rvgeo.js';
+
+console.log(RVGeo);
+
 initDom(document.getElementById('map')); // set the map size to the screen size
 
 let map = L.map('map',
