@@ -29,7 +29,7 @@ SAVE_PATH6 = os.path.join(PARENT_PATH, 'arrival_trip_count.csv') # path to the a
 
 SAVE_PATH7 = os.path.join(PARENT_PATH, 'distance_duration.csv') # path to the distance and duration file
 
-
+SAVE_IMGS = os.path.join(PARENT_PATH, '..', 'img') # path to the img directory
 
 
 # Q1 : How many unique taxis are there in this dataset, and how many trips are recorded?
@@ -141,6 +141,74 @@ def visualize_q3(daily_trip_count):
     plt.xticks(rotation=45)
     plt.show()
 
+def visualize_q3_2(daily_trip_count):
+    # 以月为单位绘制每日行程数量的折线图 作为一组图
+    # 按照月份分组 pandas dataframe
+    daily_trip_count['month'] = pd.to_datetime(daily_trip_count['pick_up_date']).dt.month
+    # 计算每月的行程数量
+    monthly_trip_count = daily_trip_count.groupby('month')['count'].sum().reset_index()
+    # 绘制每月行程数量的折线图
+    plt.figure(figsize=(12, 6))
+    sns.lineplot(data=monthly_trip_count, x='month', y='count')
+    plt.title('Monthly Trip Count Throughout the Year')
+    plt.xlabel('Month')
+    plt.ylabel('Trip Count')
+    # plt.show()
+    # save to file
+    # print(SAVE_IMGS)
+    plt.savefig(os.path.join(SAVE_IMGS, 'monthly_trip_count.png'))
+
+def visualize_q3_3(daily_trip_count):
+    # 确保数据类型正确
+    daily_trip_count['pick_up_date'] = pd.to_datetime(daily_trip_count['pick_up_date'], errors='coerce')
+    daily_trip_count['count'] = pd.to_numeric(daily_trip_count['count'], errors='coerce')
+
+    # 移除无效数据
+    daily_trip_count.dropna(subset=['pick_up_date', 'count'], inplace=True)
+
+    # 添加月份和星期几列
+    daily_trip_count['month'] = daily_trip_count['pick_up_date'].dt.month
+    daily_trip_count['day_of_week'] = daily_trip_count['pick_up_date'].dt.dayofweek
+
+    # 定义一周七天的颜色和标签
+    week_colors = sns.color_palette("husl", 7)
+    week_labels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+    # 创建 3x4 的子图布局
+    fig, axes = plt.subplots(3, 4, figsize=(20, 15))
+    
+    for month in range(1, 13):
+        month_data = daily_trip_count[daily_trip_count['month'] == month]
+        ax = axes[(month - 1) // 4, (month - 1) % 4]  # 获取子图位置
+        sns.lineplot(data=month_data, x='pick_up_date', y='count', ax=ax, label='Daily Count', color='gray')
+        
+        # 绘制每个点（按星期几着色）
+        for day in range(7):
+            day_data = month_data[month_data['day_of_week'] == day]
+            ax.scatter(day_data['pick_up_date'], day_data['count'], color=week_colors[day], label=week_labels[day] if month == 1 else "") 
+        
+        ax.set_title(f'Month {month}')
+        ax.set_xlabel('Date')
+        ax.set_ylabel('Trip Count')
+        ax.xaxis.set_major_locator(plt.MaxNLocator(10))
+        ax.tick_params(axis='x', rotation=45)
+
+    # 设置图例，只显示一次
+    handles, labels = axes[0, 0].get_legend_handles_labels()
+    
+    # 过滤重复的标签，确保图例清晰
+    unique_labels = []
+    unique_handles = []
+    for handle, label in zip(handles, labels):
+        if label not in unique_labels:
+            unique_labels.append(label)
+            unique_handles.append(handle)
+
+    fig.legend(unique_handles, unique_labels, loc='upper right', title='Day of the Week')
+    
+    plt.tight_layout()
+    plt.savefig(os.path.join(SAVE_IMGS, 'monthly_trip_count_subplots.png'))
+
 def q3():
     # (3) How does the daily trip count (i.e., number of trips per day) change throughout the year? Any rhythm or seasonality?
     with ProgressBar():
@@ -153,6 +221,7 @@ def q3():
     daily_trip_count = daily_trip_count.sort_index().reset_index()
     # 3. 保存结果
     daily_trip_count.to_csv(SAVE_PATH4)
+
 
 def q4():
 ## (4) What is the distribution of the number of departure trips at different locations (i.e., intersections)? What about the distribution of arrival trips? What will you conclude from these two distributions?
@@ -410,15 +479,19 @@ if __name__ == '__main__':
     # visualize_q2(taxi_trip_count)
 
     # q3()
-    # daily_trip_count = pd.read_csv(SAVE_PATH4, header= 0) # pandas dataframe
+    daily_trip_count = pd.read_csv(SAVE_PATH4, header= 0) # pandas dataframe
     # visualize_q3(daily_trip_count)
+    # visualize_q3_2(daily_trip_count)
+    visualize_q3_3(daily_trip_count)
+
+
 
     # q4()
     # departure_trip_count = pd.read_csv(SAVE_PATH5, header= 0) # pandas dataframe
     # arrival_trip_count = pd.read_csv(SAVE_PATH6, header= 0) # pandas dataframe
     # visualize_q4(departure_trip_count, arrival_trip_count)
 
-    q5()
+    # q5()
 
 
     # q6()

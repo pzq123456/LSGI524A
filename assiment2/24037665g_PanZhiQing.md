@@ -32,6 +32,8 @@ Figure 1: Distribution of the number of trips per taxi(line chart)
 
 The top performer is taxi 4816, which has 22743 trips. The last performer is taxi 13432, which has only 1 trip.
 
+From the distribution of the number of trips per taxi, we can find that the number of trips per taxi is mainly distributed between 8000 and 14000.
+
 The distribution of the number of trips per taxi is as follows:
 
 |name|count|
@@ -54,6 +56,16 @@ Figure 2: Histogram of the number of trips per taxi
 
 ![image](./img/p3.png)
 Figure 3: Daily trip count throughout first quarter of the year
+
+![image](./img/monthly_trip_count.png)
+Figure 4: Monthly trip count throughout the year
+
+![image](./img/monthly_trip_count_subplots.png)
+Figure 5: Monthly trip count throughout the year(subplots)
+
+From Figure 3, in general, August is the lowest order month globally, and March and October are two significant peaks.
+
+From Figure 5, I will color each day of the week with a different color, and we can find some interesting patterns. In most cases, weekends and Mondays are the lowest points in the order volume (relatively), while Fridays and Saturdays are usually the days with the highest order volume. Generally speaking, the second Sunday of each week is a significant monthly low point. In addition, from Figure 3, we can find that 8.27 is a significant global low point. Considering that there are no special holidays in the Manhattan area, I guess this is due to weather reasons or data collection problems. In addition, from Figure 3, we can find that 12.24 is a significant low point, because this day is Christmas, so the order volume is significantly reduced.
 
 ## (4) What is the distribution of the number of departure trips at different locations (i.e., intersections)? What about the distribution of arrival trips? What will you conclude from these two distributions?
 
@@ -82,8 +94,6 @@ Figure 8: Hourly variation of trips on 2011/3/12
 ### 2011/9/1
 ![image](./img/hourly_trip_count_2011-09-01.png)
 Figure 9: Hourly variation of trips on 2011/9/1
-
-
 
 ## (6) What is the probability distribution of the trip distance (measured as straight-line distance)? How about travel time (i.e., trip duration)? What will you conclude from these two distributions?
 
