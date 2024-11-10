@@ -109,16 +109,24 @@ Figure 9: Hourly variation of trips on 2011/3/12
 ![image](./img/hourly_trip_count_2011-09-01.png)
 Figure 10: Hourly variation of trips on 2011/9/1
 
+From the hourly variation of trips, we can find that the three selected days all have three obvious peaks (0:00, 11:00, 18:00), and there is also an obvious global low point (6:00). This is related to the daily routine of most people. 11:00 is the time for people's lunch activities (going out for lunch, appointments, etc.), 18:00 is generally related to arrangements after get off work, and around 0:00 may be related to night shifts and night travel.
+
 <div STYLE="page-break-after: always;"></div>
 
 ## (6) What is the probability distribution of the trip distance (measured as straight-line distance)? How about travel time (i.e., trip duration)? What will you conclude from these two distributions?
 
 ![image](./img/p5.png)
 Figure 11: Probability distribution of the trip distance
+
+From the probability distribution of the trip distance, we can find that the peak is located near 2000 meters, which means that most of the trip distances are concentrated in this range. The distribution is symmetric, and the tails on both sides gradually decrease to near zero, indicating that extreme trip distances are less likely to occur.
+
+
 ![image](./img/p6.png)
 Figure 12: Probability distribution of the trip duration
 
 <div STYLE="page-break-after: always;"></div>
+
+Most of the trip durations are concentrated around 1000 seconds (about 16 minutes), and the distribution presents a symmetric bell shape, with the tails on both sides gradually decreasing to near zero, indicating that extreme long or short trip durations are less likely to occur.
 
 ## Appendix
 - The code used in this assignment can also be found in the link: https://github.com/pzq123456/LSGI524A/blob/main/assiment2/src/clean.py
