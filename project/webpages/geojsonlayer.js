@@ -134,19 +134,20 @@ export function initGeoJsonLayer() { // 这一步只是 向L注册了一个新�
             info.update = infoUpdate.bind(info);
             this._info = info;
         },
-        _createLegend: function () {
+
+        _createLegend: function (name = 'area level123') {
             let legend = L.control({position: 'bottomright'});
 
-            legend.onAdd = this._legendHelper.bind(this);
+            legend.onAdd = this._legendHelper.bind(this,name);
 
-            legend.update = function () {
-                this._legend._container.innerHTML = this._legendHelper().innerHTML;
-            }.bind(this);
+            legend.update = function (name) {
+                this._legend._container.innerHTML = this._legendHelper(name).innerHTML;
+            }.bind(this, name);
 
             return this._legend = legend;
         },
 
-        _legendHelper: function () {
+        _legendHelper: function (name) {
             const div = L.DomUtil.create('div', 'info legend');
 
             const labels = [];
@@ -158,7 +159,7 @@ export function initGeoJsonLayer() { // 这一步只是 向L注册了一个新�
             // console.log(grades);
             const colors = [];
 
-            labels.push('area level');
+            labels.push(`${name}`);
 
             for (let i = 0; i < grades.length - 1; i++) {
                 colors.push(this._stastics.mapValue2Color(grades[i], true, this._colors));

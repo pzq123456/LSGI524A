@@ -21,3 +21,7 @@ __pycache__/
 cache
 
 output
+
+project/data/web/
+project/data/道路街景指标（有的道路没有所以是空值）.zip
+project/data/道路街景指标（有的道路没有所以是空值）
