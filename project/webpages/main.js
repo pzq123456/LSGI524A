@@ -1,10 +1,17 @@
-import { initDom } from './utils.js';
+import { createSelectAndButton } from './utils.js';
 import { baseMapInfos } from './baseMaps.js';
 import { initCanvasLayer } from './canvaslayer.js';
 import { getBaseMap } from './utils.js';
 import { initGeoJsonLayer } from './geojsonlayer.js';
+import { interpolateColors, interpolateColorsEx, getRandomLightColor, getRandomDarkColor } from './color.js';
 
-initDom(document.getElementById('map')); // set the map size to the screen size
+// initDom(document.getElementById('map')); // set the map size to the screen size
+
+// get btn1
+const btn1 = document.getElementById('btn1');
+// get .toolbar
+const toolbar = document.querySelector('.toolbar');
+
 
 let map = L.map('map',
     {
@@ -28,7 +35,7 @@ const infoUpdate = function (props) {
 
 const infoUpdate2 = function (props) {
     // const contents = props ? `<b>${props.Shape_Leng}</b><br />${props.COUNT_} people` : 'Hover over a state';
-    const contents = props ? `<b>RoadID : ${props.RoadID}</b><br/> trajectory count : ${props.MEAN_Tree} ` : 'Hover over a trajectory';
+    const contents = props ? `<b>RoadID : ${props.RoadID}</b><br/> Index : ${props.MEAN_Tree} ` : 'Hover over a trajectory';
     this._div.innerHTML = `${contents}`;
 }
 
@@ -65,5 +72,30 @@ fetch('../data/streetscapeIndex.geojson')
     })
     .catch(error => {
         console.error('Error:', error);
-    });
+});
 
+// "RoadID": 1, "MEAN_Build": 0.0, "MEAN_Car": 0.0, "MEAN_Perso": 0.0, "MEAN_Rider": 0.0, "MEAN_Road": 0.0, "MEAN_RoadS": 0.0, "MEAN_Sky": 0.0, "MEAN_Tree": 0.0, "Shape_Leng": 6.7557670355399999 }
+
+// const C_Colors = interpolateColors("red","white", 16);
+const C_Colors = interpolateColorsEx("red", "green", "blue", 16);
+
+btn1.onclick = function () {
+    console.log(geoJsonLayer2.getColumns());
+    geoJsonLayer.setColors(C_Colors);
+    geoJsonLayer2.setColumn('MEAN_Tree');
+};
+
+const columns = ['MEAN_Car', 'MEAN_Perso', 'MEAN_Rider', 'MEAN_Road', 'MEAN_RoadS', 'MEAN_Sky', 'MEAN_Tree', 'Shape_Leng'];
+
+
+// 为每一种颜色生成一种颜色
+let colorset = {}
+columns.forEach((column) => {
+    colorset[column] = interpolateColors(getRandomLightColor(), getRandomDarkColor(), 16);
+});
+
+// create a select and a button
+createSelectAndButton(toolbar, columns, 'Update', function () {
+    const selectedColumn = document.querySelector('select').value;
+    geoJsonLayer2.setColumn(selectedColumn, colorset[selectedColumn]);
+});

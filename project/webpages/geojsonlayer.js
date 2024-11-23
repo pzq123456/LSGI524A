@@ -5,17 +5,41 @@ export function initGeoJsonLayer() { // 这一步只是 向L注册了一个新�
     L.GeoJsonLayer = L.Layer.extend({
         initialize: function (infoUpdate) {
             this._stastics = new Stastics(); // 单值统计
-            // this._grades = grades;
             this._colors = DefaultColors;
             this._infoUpdate = infoUpdate;
             this._data = DefaultGeoJson;
             this._getVal = (d) => parseInt(d.properties.count);
         },
 
-        setColors: function (colors) {
+        getColumns: function () {
+            // return this._data.features[0].properties;
+            // 仅仅返回属性名
+            return Object.keys(this._data.features[0].properties);
+        }, 
+
+        setColumn: function (column, colors = DefaultColors) {
+            // 在数据传入后 设置统计及显示的列
+
+            this._getVal = (d) => parseInt(d.properties[column]);
+            this._stastics.clear();
+            this._stastics.append(this._data.features, this._getVal);
+
             this._colors = colors;
             if (this._legend){
-                this._legend.update();
+                this._legend.update(column);
+            }
+
+            if (this._geoJson) {
+                this._geoJson.clearLayers();
+                this._geoJson.addData(this._data);
+                this._legend.update(column);
+            }
+        },
+
+        setColors: function (colors,name = 'legend') {
+            this._colors = colors;
+            if (this._legend){
+                this._legend.update(name);
             }
         },
 
@@ -135,19 +159,19 @@ export function initGeoJsonLayer() { // 这一步只是 向L注册了一个新�
             this._info = info;
         },
 
-        _createLegend: function (name = 'area level123') {
+        _createLegend: function (name = 'legend') {
             let legend = L.control({position: 'bottomright'});
 
-            legend.onAdd = this._legendHelper.bind(this,name);
+            legend.onAdd = this._legendHelper.bind(this, name);
 
-            legend.update = function (name) {
+            legend.update = function (name = 'legend') {
                 this._legend._container.innerHTML = this._legendHelper(name).innerHTML;
-            }.bind(this, name);
+            }.bind(this);
 
             return this._legend = legend;
         },
 
-        _legendHelper: function (name) {
+        _legendHelper: function (name = 'legend') {
             const div = L.DomUtil.create('div', 'info legend');
 
             const labels = [];
