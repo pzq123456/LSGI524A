@@ -23,3 +23,8 @@ cache
 output
 project/data/逐街道骑行量统计结果.zip
 project/data/逐街道骑行量统计结果/
+
+
+project/data/web/
+project/data/道路街景指标（有的道路没有所以是空值）.zip
+project/data/道路街景指标（有的道路没有所以是空值）

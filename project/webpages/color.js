@@ -67,3 +67,63 @@ export function interpolateColors(startColor, endColor, steps) {
     return colors;
 }
 
+// 拓展的颜色插值算法 可以支持三种颜色的插值及透明度的插值
+export function interpolateColorsEx(startColor, middleColor, endColor, steps) {
+    startColor = parseColor(startColor);
+    middleColor = parseColor(middleColor);
+    endColor = parseColor(endColor);
+    
+    if (steps < 3) {
+        throw new Error("分级个数不少于3");
+    }
+
+    const colors = [];
+    for (let i = 0; i < steps; i++) {
+        const t = i / (steps - 1);
+        let r, g, b;
+        if (t < 0.5) {
+            r = Math.round(startColor.r + 2 * t * (middleColor.r - startColor.r));
+            g = Math.round(startColor.g + 2 * t * (middleColor.g - startColor.g));
+            b = Math.round(startColor.b + 2 * t * (middleColor.b - startColor.b));
+        } else {
+            r = Math.round(middleColor.r + 2 * (t - 0.5) * (endColor.r - middleColor.r));
+            g = Math.round(middleColor.g + 2 * (t - 0.5) * (endColor.g - middleColor.g));
+            b = Math.round(middleColor.b + 2 * (t - 0.5) * (endColor.b - middleColor.b));
+        }
+        colors.push(`rgb(${r}, ${g}, ${b})`);
+    }
+
+    return colors;
+}
+
+
+// 获取随机浅色
+export function getRandomLightColor() {
+    // 整数 0-255
+    const r = Math.floor(Math.random() * 100 + 155);
+    const g = Math.floor(Math.random() * 100 + 155);
+    const b = Math.floor(Math.random() * 100 + 155);
+
+    return `rgb(${r}, ${g}, ${b})`;
+
+}
+
+// 获取随机深色
+export function getRandomDarkColor() {
+
+    const r = Math.floor(Math.random() * 100);
+    const g = Math.floor(Math.random() * 100);
+    const b = Math.floor(Math.random() * 100);
+
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+// 获取随机颜色
+export function getRandomColor() {
+
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+
+    return `rgb(${r}, ${g}, ${b})`;
+}

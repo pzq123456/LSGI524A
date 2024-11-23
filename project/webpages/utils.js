@@ -75,3 +75,63 @@ export function addColumn2GeoJson(geoJson, data, match_fn = eu_match, columnName
     });
     return updatedGeoJson;
 }
+
+// 根据传入的属性值构造一个下拉框及一个按钮
+export function createSelectAndButton(parent, options, buttonName, buttonClickHandler, style = {}, info = "info") {
+    let infoElement = document.createElement('div');
+    infoElement.innerText = info;
+    parent.appendChild(infoElement);
+
+    let select = document.createElement('select');
+    for (let option of options) {
+        let optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.innerText = option;
+        select.appendChild(optionElement);
+    }
+    parent.appendChild(select);
+
+    let button = document.createElement('button');
+    button.innerText = buttonName;
+    button.onclick = buttonClickHandler;
+    parent.appendChild(button);
+
+    // style for father element
+    // for (let key in style) {
+    //     parent.style[key] = style[key];
+    // }
+
+    // {
+    //     'parent' : {
+    //         'color': 'black',
+    //     },
+    //     'select': {
+    //         'margin': '5px',
+    //     },
+    //     'button': {
+    //         'margin': '5px',
+    //     }
+    // }
+
+    // style for select element
+    for (let key in style.select) {
+        select.style[key] = style.select[key];
+    }
+
+    // style for button element
+    for (let key in style.button) {
+        button.style[key] = style.button[key];
+    }
+
+    // style for info element
+    for (let key in style.parent) {
+        parent.style[key] = style.parent[key];
+    }
+
+    // style for info element
+    for (let key in style.info) {
+        infoElement.style[key] = style.info[key];
+    }
+
+    return select;
+}
