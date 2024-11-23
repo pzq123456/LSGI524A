@@ -1,4 +1,4 @@
-import { createSelectAndButton } from './utils.js';
+import { createSelectAndButton, updateDiv } from './utils.js';
 import { baseMapInfos } from './baseMaps.js';
 import { initCanvasLayer } from './canvaslayer.js';
 import { getBaseMap } from './utils.js';
@@ -8,6 +8,10 @@ import { interpolateColors, interpolateColorsEx, getRandomLightColor, getRandomD
 // initDom(document.getElementById('map')); // set the map size to the screen size
 
 const toolbar = document.querySelector('.toolbar');
+const Info = document.querySelector('.Info');
+
+updateDiv(Info, 'Trajectory Visualization');
+
 
 
 let map = L.map('map',
@@ -42,15 +46,18 @@ const geoJsonLayer2 = L.geoJsonLayer(infoUpdate2);
 layerControl.addOverlay(geoJsonLayer, 'trajectory');
 layerControl.addOverlay(geoJsonLayer2, 'streetscapeIndex');
 
-// geoJsonLayer.addTo(map);
-geoJsonLayer2.addTo(map);
+geoJsonLayer.addTo(map);
+// geoJsonLayer2.addTo(map);
 
-// 获取 CSV 文件并解析为数组
-fetch('../data/8.1-7.geojson')
+fetch('../data/trajectory/whole.geojson')
     .then(response => response.json())
     .then(data => {
         geoJsonLayer.setColors(colorsets[1]);
         geoJsonLayer.updateData(data, (d) => parseInt(d.properties.COUNT_));
+
+        // 将 trajectory 的数量显示在 info 中 也就是总共有多少条轨迹
+        const count = data.features.length;
+        updateDiv(Info, `Trajectory Visualization, total count: ${count}`);
     })
     .catch(error => {
         console.error('Error:', error);
@@ -93,6 +100,16 @@ createSelectAndButton(toolbar, columns, 'Show', function () {
     const colorset = colorsets[index % colorsets.length];
     // 设置颜色
     geoJsonLayer2.setColumn(selectedColumn, colorset);
+
+    // 若未 add 到 map 中则添加
+    if (!map.hasLayer(geoJsonLayer2)) {
+        // 若有 geoJsonLayer 则移除
+        if (map.hasLayer(geoJsonLayer)) {
+            map.removeLayer(geoJsonLayer);
+        }
+        geoJsonLayer2.addTo(map);
+    }
+
 }, {
     'parent' : {
         'color': 'black',

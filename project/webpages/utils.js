@@ -135,3 +135,22 @@ export function createSelectAndButton(parent, options, buttonName, buttonClickHa
 
     return select;
 }
+
+export function updateDiv(
+    divElement,
+    content = "info",
+    style = {
+        'color': 'black',
+        'padding': '5px',
+        'borderRadius': '5px',
+        'margin': '5px',
+        'border': '1px solid black',
+        'backgroundColor': 'white',
+        'fontSize': '20px',
+    }
+){
+    divElement.innerText = content;
+    for (let key in style) {
+        divElement.style[key] = style[key];
+    }
+}
