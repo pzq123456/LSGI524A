@@ -7,9 +7,6 @@ import { interpolateColors, interpolateColorsEx, getRandomLightColor, getRandomD
 
 // initDom(document.getElementById('map')); // set the map size to the screen size
 
-// get btn1
-const btn1 = document.getElementById('btn1');
-// get .toolbar
 const toolbar = document.querySelector('.toolbar');
 
 
@@ -52,7 +49,7 @@ geoJsonLayer2.addTo(map);
 fetch('../data/8.1-7.geojson')
     .then(response => response.json())
     .then(data => {
-        // geoJsonLayer.updateData(toGeoJson(hull));
+        geoJsonLayer.setColors(colorsets[1]);
         geoJsonLayer.updateData(data, (d) => parseInt(d.properties.COUNT_));
     })
     .catch(error => {
@@ -74,28 +71,56 @@ fetch('../data/streetscapeIndex.geojson')
         console.error('Error:', error);
 });
 
-// "RoadID": 1, "MEAN_Build": 0.0, "MEAN_Car": 0.0, "MEAN_Perso": 0.0, "MEAN_Rider": 0.0, "MEAN_Road": 0.0, "MEAN_RoadS": 0.0, "MEAN_Sky": 0.0, "MEAN_Tree": 0.0, "Shape_Leng": 6.7557670355399999 }
 
-// const C_Colors = interpolateColors("red","white", 16);
-const C_Colors = interpolateColorsEx("red", "green", "blue", 16);
+const columns = ['MEAN_Car', 'MEAN_Road', 'MEAN_RoadS', 'MEAN_Sky', 'MEAN_Tree', 'Shape_Leng'];
 
-btn1.onclick = function () {
-    console.log(geoJsonLayer2.getColumns());
-    geoJsonLayer.setColors(C_Colors);
-    geoJsonLayer2.setColumn('MEAN_Tree');
-};
-
-const columns = ['MEAN_Car', 'MEAN_Perso', 'MEAN_Rider', 'MEAN_Road', 'MEAN_RoadS', 'MEAN_Sky', 'MEAN_Tree', 'Shape_Leng'];
-
-
-// 为每一种颜色生成一种颜色
-let colorset = {}
-columns.forEach((column) => {
-    colorset[column] = interpolateColors(getRandomLightColor(), getRandomDarkColor(), 16);
-});
+const colorsets = [
+    ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b'], // blue
+    ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'], // blue-green
+    ['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529'], // green
+    ['#f7f4f9','#e7e1ef','#d4b9da','#c994c7','#df65b0','#e7298a','#ce1256','#980043','#67001f'], // red
+    ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#54278f','#3f007d'], // purple
+    ['#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#a63603','#7f2704'], // orange
+    ['#fff7f3','#fde0dd','#fcc5c0','#fa9fb5','#f768a1','#dd3497','#ae017e','#7a0177','#49006a'], // pink
+];
 
 // create a select and a button
-createSelectAndButton(toolbar, columns, 'Update', function () {
+createSelectAndButton(toolbar, columns, 'Show', function () {
     const selectedColumn = document.querySelector('select').value;
-    geoJsonLayer2.setColumn(selectedColumn, colorset[selectedColumn]);
-});
+    // 获取选择的 column 的 index
+    const index = columns.indexOf(selectedColumn);
+    // index 限制在颜色集的长度内 取余
+    const colorset = colorsets[index % colorsets.length];
+    // 设置颜色
+    geoJsonLayer2.setColumn(selectedColumn, colorset);
+}, {
+    'parent' : {
+        'color': 'black',
+        'padding': '5px',
+        'borderRadius': '5px',
+        'margin': '5px',
+        'border': '1px solid black',
+        'backgroundColor': '#d9f0a3',
+    },
+    'select': {
+        'margin': '5px',
+        'borderRadius': '5px',
+        'backgroundColor': '#f7fbff',
+    },
+    'button': {
+        'margin': '5px',
+        'width': '100px',
+        'height': '40px',
+        'borderRadius': '5px',
+        'backgroundColor': '#4CAF50',
+        'color': 'white',
+    },
+    'info': {
+        'margin': '5px',
+        'fontSize': '20px',
+        'bold': 'true',
+        'color': 'black',
+    }
+}
+
+,"Select a column to show (colorSets form https://colorbrewer2.org/).");
