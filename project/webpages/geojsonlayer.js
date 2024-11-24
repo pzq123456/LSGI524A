@@ -178,9 +178,6 @@ export function initGeoJsonLayer() { // 这一步只是 向L注册了一个新�
             let from, to;
 
             const grades = this._stastics.getGrades(this._colors.length);
-            // grades reverse
-            grades.reverse();
-            // console.log(grades);
             const colors = [];
 
             labels.push(`${name}`);
@@ -188,6 +185,8 @@ export function initGeoJsonLayer() { // 这一步只是 向L注册了一个新�
             for (let i = 0; i < grades.length - 1; i++) {
                 colors.push(this._stastics.mapValue2Color(grades[i], true, this._colors));
             }
+
+            colors.reverse();
 
             for (let i = 0; i < grades.length - 1; i++) {
                 from = grades[i];
