@@ -79,7 +79,7 @@ fetch('../data/streetscapeIndex.geojson')
 });
 
 
-const columns = ['MEAN_Car', 'MEAN_Road', 'MEAN_RoadS', 'MEAN_Sky', 'MEAN_Tree', 'Shape_Leng'];
+const columns = ['MEAN_Sky', 'MEAN_Tree', 'MEAN_Car', 'MEAN_Road', 'MEAN_RoadS'];
 
 const colorsets = [
     ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b'], // blue
@@ -89,6 +89,7 @@ const colorsets = [
     ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#54278f','#3f007d'], // purple
     ['#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#a63603','#7f2704'], // orange
     ['#fff7f3','#fde0dd','#fcc5c0','#fa9fb5','#f768a1','#dd3497','#ae017e','#7a0177','#49006a'], // pink
+    // ['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529'], // green
 ];
 
 // create a select and a button

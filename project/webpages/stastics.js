@@ -51,7 +51,8 @@ export class Stastics {
         }
 
         if (isReverse) {
-            return 1 - mappedValue;
+            // 反转后判断是否小于0，如果小于0则返回0
+            return Math.max(0, 1 - mappedValue);
         } else {
             return mappedValue;
         }
