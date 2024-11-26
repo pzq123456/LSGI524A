@@ -52,7 +52,7 @@ geoJsonLayer.addTo(map);
 fetch('../data/trajectory/whole.geojson')
     .then(response => response.json())
     .then(data => {
-        geoJsonLayer.setColors(colorsets[1]);
+        geoJsonLayer.setColors(colorsets[0]);
         geoJsonLayer.updateData(data, (d) => parseInt(d.properties.COUNT_));
 
         // 将 trajectory 的数量显示在 info 中 也就是总共有多少条轨迹

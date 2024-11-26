@@ -48,8 +48,7 @@ def draw_pie(data,title):
 
     plt.axis('equal')  # 使饼图保持圆形
     plt.title(title,
-         fontsize=20,
-         fontweight='bold')
+         fontsize=20)
     # legend 图例
     # plt.legend(labels, loc='upper right', fontsize=14, title='Class', title_fontsize='14')
     
@@ -98,7 +97,7 @@ def draw_pie_DS(data,title):
             )
 
     plt.axis('equal')  # 使饼图保持圆形
-    plt.title(title, fontsize=16, fontweight='bold')    
+    plt.title(title, fontsize=16)    
     # plt.legend(class_map.values(), loc='upper right', fontsize=12, title='Class', title_fontsize='14')
 
     plt.show()
