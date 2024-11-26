@@ -30,7 +30,7 @@ def dsbar(DSpathArr, YEARArr):
         y = norm.pdf(x, mu, sigma)
         plt.plot(x, y, label='N(' + str(round(mu, 2)) + ',' + str(round(sigma, 2)) + ')' + ' ' + YEARArr[i], color=colors[i])
     # x 轴 刻度增加
-    plt.xticks(np.arange(0, 7000, 200), fontsize=14)
+    plt.xticks(np.arange(0, 7000, 400), fontsize=14)
     plt.yticks(fontsize=14)
 
     # 添加标题
@@ -39,7 +39,7 @@ def dsbar(DSpathArr, YEARArr):
     plt.xlabel('Riding Distance (m)', fontsize=14)
     plt.ylabel('Frequency', fontsize=14)
 
-    plt.legend()
+    plt.legend(fontsize=14)
     # 显示
     plt.show()
 
@@ -65,7 +65,7 @@ def dubar(DupathArr, YEARArr):
         y = norm.pdf(x, mu, sigma)
         plt.plot(x, y, label='N(' + str(round(mu, 2)) + ',' + str(round(sigma, 2)) + ')' + ' ' + YEARArr[i], color=colors[i])
 
-    plt.xticks(np.arange(0, 120, 5), fontsize=14)
+    plt.xticks(np.arange(0, 120, 10), fontsize=14)
     plt.yticks(fontsize=14)
 
     # 添加标题
@@ -74,7 +74,7 @@ def dubar(DupathArr, YEARArr):
     plt.xlabel('Riding Duration (min)', fontsize=14)
     plt.ylabel('Frequency', fontsize=14)
 
-    plt.legend()
+    plt.legend(fontsize=14)
     # 显示
     plt.show()
 
