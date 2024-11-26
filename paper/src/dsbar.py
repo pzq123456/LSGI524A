@@ -34,7 +34,7 @@ def dsbar(DSpathArr, YEARArr):
     plt.yticks(fontsize=14)
 
     # 添加标题
-    plt.title('Riding Distance Distribution of ' + YEARArr[0] + ' and ' + YEARArr[1], fontsize=20)
+    plt.title('Riding Distance Distribution of ' + YEARArr[0], fontsize=20)
     # 添加标签
     plt.xlabel('Riding Distance (m)', fontsize=14)
     plt.ylabel('Frequency', fontsize=14)
@@ -69,7 +69,7 @@ def dubar(DupathArr, YEARArr):
     plt.yticks(fontsize=14)
 
     # 添加标题
-    plt.title('Riding Duration Distribution of ' + YEARArr[0] + ' and ' + YEARArr[1], fontsize=20)
+    plt.title('Riding Duration Distribution of ' + YEARArr[0], fontsize=20)
     # 添加标签
     plt.xlabel('Riding Duration (min)', fontsize=14)
     plt.ylabel('Frequency', fontsize=14)
@@ -82,9 +82,18 @@ if __name__ == '__main__':
 
     DIR = os.path.dirname(__file__)
 
-    Paths1 = [os.path.join(DIR, 'simple', 'track', 'DS16.csv'), os.path.join(DIR, 'simple', 'track', 'DS20.csv')]
-    Years = ['2016', '2020']
-    Paths2 = [os.path.join(DIR, 'simple', 'DU', 'DU16.csv'), os.path.join(DIR, 'simple', 'DU', 'DU20.csv')]
+    Paths1 = [
+        os.path.join(DIR, 'simple', 'track', 'DS16.csv'), 
+        # os.path.join(DIR, 'simple', 'track', 'DS20.csv')
+        ]
+    Years = [
+        '2016', 
+        # '2020'
+        ]
+    Paths2 = [
+        os.path.join(DIR, 'simple', 'DU', 'DU16.csv'),
+        # os.path.join(DIR, 'simple', 'DU', 'DU20.csv')
+        ]
 
     dsbar(Paths1, Years)
     dubar(Paths2, Years)

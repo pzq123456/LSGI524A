@@ -35,10 +35,21 @@ def draw_pie(data,title):
     explode = [0] * 8
     explode[max_index] = 0.1
 
-    plt.pie(counts, labels=counts, colors=colors, autopct='%1.1f%%', startangle=140, wedgeprops=dict(width=0.3, edgecolor='w'), explode=explode)
+    plt.pie(counts,
+            labels=counts,
+            colors=colors,
+            autopct='%1.1f%%',
+            startangle=140,
+            wedgeprops=dict(width=0.3,
+            edgecolor='w'),
+            explode=explode,
+            textprops={'fontsize': 14}
+        )
 
     plt.axis('equal')  # 使饼图保持圆形
-    plt.title(title, fontsize=20, fontweight='bold')
+    plt.title(title,
+         fontsize=20,
+         fontweight='bold')
     # legend 图例
     # plt.legend(labels, loc='upper right', fontsize=14, title='Class', title_fontsize='14')
     
@@ -82,7 +93,8 @@ def draw_pie_DS(data,title):
                 autopct='%1.1f%%', 
                 startangle=140, 
                 wedgeprops=dict(width=0.3, edgecolor='w'), 
-                explode=explode
+                explode=explode,
+                textprops={'fontsize': 14}
             )
 
     plt.axis('equal')  # 使饼图保持圆形
@@ -105,13 +117,13 @@ if __name__ == '__main__':
     Paths = [PATH1, PATH2]
 
     # 累计骑行距离
-    for i in range(2):
+    for i in range(1):
         data = pd.read_csv(Paths[i])
         data = data[['class', 'DS']].values.tolist()
         draw_pie_DS(data, YEARs[i] + ' Riding Distance To Destination Distribution')
 
     # 累计数量
-    for i in range(2):
+    for i in range(1):
         data = pd.read_csv(Paths[i])
         data = data['class'].values.tolist()
         draw_pie(data, YEARs[i] + ' Destination Distribution')
