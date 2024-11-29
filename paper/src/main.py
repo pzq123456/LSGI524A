@@ -52,8 +52,8 @@ if __name__ == '__main__':
     topology, filter_effect = tree.get_tree_topology_with_filter()
     print(topology)
     
-    with open(os.path.join(DATA_DIR, 'tmp', 'filter_effect.txt'), 'w') as f:
-        f.write(str(filter_effect))
+    # with open(os.path.join(DATA_DIR, 'tmp', 'filter_effect.txt'), 'w') as f:
+    #     f.write(str(filter_effect))
 
 
 
