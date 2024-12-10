@@ -88,6 +88,3 @@ Finally, we converted all POIs into GeoHASH codes and built a prefix tree with a
 
 The trajectory road network matching task took almost 3 days. For this reason, we designed a long-time running task management framework, which was deployed on the computer in the laboratory. The framework automatically decomposes the task into multiple small tasks that can be processed in parallel and outputs the running results to the log file. We also integrated an email bot in it, which grabs the latest running results from the log and sends them to the specified email every once in a while. In this way, we can check the running status of the task anytime and anywhere without having to stare at the computer all the time.
 
-每5个小时
-
-Every 5 hours

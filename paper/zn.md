@@ -1,53 +1,70 @@
-# 第一章 绪论
-## 1.1 研究背景与意义
+#
+## 3.1. Study area（要增加一句关于上海市的共享单车的现状和情况）
 
-摩拜单车于2016年4月首次在上海投入运营，并掀起了一轮以共享单车市场迅速膨胀为代表的共享经济热潮。33个大中小城市积极引进共享单车服务，当年全国累计投放共享单车约200万辆，日活跃车辆最高时达到了惊人的55万辆。此时小时单价稳定在一元，共享单车也逐步以“廉价、便捷、绿色”的美好形象打入城市出行市场，快速扩张。在初步站稳脚跟，共享单车企业们于2019年掀起一轮涨价风波，小蓝单车、青桔单车、摩拜单车、哈啰单车等一众企业均上调起步价与每小时单价，有些企业涨幅超过三倍。当年年底，共享单车小时单价正式步入”三元时代“。
+本文选取上海市作为研究区域，上海市北界长江，南枕杭州湾，西接江浙两省，东临东海，全市面积 6340.5 平方公里，现辖16个市辖区：黄浦区、徐汇区、长宁区、静安区、普陀区、虹口区、杨浦区、闵行区、宝山区、嘉定区、浦东新、金山区、松江区、青浦区、奉贤区、崇明区。参考第七次全国人口普查主要数据，上海市常住人口为 24870895 人。近几十年来经济飞速发展的同时，上海市逐步形成了多中心、高人口密度及高混杂度的城市格局，这也进一步引起人口拥挤、交通拥堵和环境污染等大城市病。自摩拜单车在上海投放以来，已有13家企业在沪运营，累计投放车辆达到178万辆，其中包括约6万辆互联网租赁电动自行车。
 
-无桩电子围栏式共享单车是一种具有浓厚互联网气息的产品服务，也是共享经济快速发展阶段的标志性产物。共享单车一般依赖 GPS 定位设备与互联网接入，借助电子围栏算法及主动式 GPS 定位圈定借还车区域及使用范围，并结合移动客户端与后台调度算法规范用户骑行行为（如骑行红包奖励及出圈扣除押金惩罚等）以达到维持正常经营的目的。相较于传统的有桩式公共自行车，共享单车具有极大地便利性性优势与极低的准入门槛，因此一经投放市场，共享单车的用户规模便快速扩大，其本身也成为解决城市出行“最后一公里”、缓解城市污染与交通拥堵等问题的重要解决方案。 
+The study area selected in this paper is Shanghai. Shanghai is located in the north of the Yangtze River, the south of Hangzhou Bay, the west of Jiangsu and Zhejiang provinces, and the east of the East China Sea. The total area of the city is 6340.5 square kilometers, and it is under the jurisdiction of 16 districts: Huangpu District, Xuhui District, Changning District, Jing'an District, Putuo District, Hongkou District, Yangpu District, Minhang District, Baoshan District, Jiading District, Pudong New District, Jinshan District, Songjiang District, Qingpu District, Fengxian District, and Chongming District. According to the main data of the seventh national census, the permanent population of Shanghai is 24,870,895. In recent decades, Shanghai has developed rapidly economically and gradually formed a multi-center, high population density, and high complexity urban pattern, which has further caused urban diseases such as population crowding, traffic congestion, and environmental pollution. Since Mobike was put into operation in Shanghai, 13 companies have operated in Shanghai, with a total of 1.78 million vehicles put into operation, including about 60,000 Internet rental electric bicycles.
 
-共享单车是城市慢行系统的一种模式创新，是使用互联网思维解决交通运输问题的一种可行方式，尤其对解决人民群众出行的”最后一公里“问题十分有效。在一些城市，共享单车确实有效缓解了中短途、慢速交通系统的压力，打通了固定的交通基础设施与居民个性化目的地之间的“最后一公里”。共享单车的出现对城市发展，居民出行行为塑造都带来深远的影响。
+## 3.2. Datasets and processing
 
-城市出行数据反映了城市空间内中小尺度、周期性、密集型、高强度的人员流动情况。人们骑行共享单车属于一种缓慢的匀速移动，且具有较高的灵活性，其轨迹往往能够渗透到城市的每一条毛细血管般狭窄的道路中，相较于固定线路的出行方式更能反映人的行为特性。结合以上两点，借助共享单车出行轨迹数据，我们既可以从宏观上把握城市主要交通干线、主要产业热点区域一周七个工作日的人口规律性流动情况，分析总体城市职住分布与产业布局情况；我们也可以从城市的微观结构着手，探究渗入城市细小角落的骑行轨迹究竟反映了怎样的行为与细碎环境的相互作用。
+本文的研究用到的数据包括共享单车骑行轨迹数据、上海市基本地理信息数据、上海市兴趣点数据、上海市街景视图数据。
 
-综上所述，本研究旨在探究城市中共享单车出行的时空模式，为城市规划和交通管理提供科学参考，同时为共享单车服务的优化提供建议。
+The data used in this paper include shared bicycle riding trajectory data, basic geographic information data of Shanghai, point of interest data of Shanghai, and street view image data of Shanghai.
 
-## 1.2 国内外研究现状
-（共享单车历史沿革段）
-公共自行车系统（Bicycle-sharing system）最早可以追溯到1965年阿姆斯特丹城市街头的“白色自行车（White Bicycle Plan）”计划[1]，该计划将自行车刷成醒目的白色并免费提供给人们随意使用。由于缺乏有效的监管，多数自行车在很短的时间内遭到偷窃或蓄意破坏，致使该项目难以为继。后来，一些项目通过引入带有监控设备的停靠点并发放收取了一定押金的智能卡来约束使用者的行为，例如英国朴茨茅斯大学于1995年启动的“智能单车”项目等。然而，固定的停靠站点难以充分满足用户灵活的骑行需求，反而削减了自行车这一灵活交通工具的可达性优势[2]。随着移动互联网的发展及移动支付手段的普及，一种新兴的无桩公共自行车系统[3]取代了原先依赖停靠点的公共自行车系统。该系统使用电子围栏技术及移动端应用程序来规范用户用车行为，这种带有鲜明的互联网及共享经济时代特色最新一代公共自行车系统即人们熟知的“共享单车”系统。
+其中骑行轨迹包括由互联网采集整理得到的 2016 年 8 月 102361 条上海市某品牌共享单车骑行轨迹数据，其包含了一个以“#”分隔的骑行轨迹点集字段，但是由于网络延迟、设备故障等原因该字段内的轨迹点为乱序排列，需要设计算法以恢复正确的骑行轨迹。对于骑行记录数据，按照如下规则清洗：1）去除骑行时长小于1分钟大于 8 小时的骑行记录；2）对于有轨迹点集的数据，去除记录到的轨迹点数量小于 3 个的记录；3）去除存在字段缺失及异常符号的记录；4）去除骑行终点位于上海市之外的记录，该记录超出研究区域。
 
-（国内外研究现状）
-共享单车出行数据蕴含丰富的时空信息，通过对这些数据的分析、整理及挖掘可以为城市治理及服务优化提供重要依据。采用合适的时空可视化手段可以有效发现隐藏在数据背后的规律。全雨霏[4]从宏观大数据角度，综合考虑骑行轨迹的起点、终点及起-终连结的时空特征，采用统计分析、问卷调查、实地调研等方法研究了南京市共享单车出行模式，分析出共享单车使用时段的峰值规律、空间热点分布规律及其影响因素（绿地分布、公共交通换乘站点分布等）并结合此为城市规划提出自己的建议。Corcoran等人[5]基于澳大利亚布里斯班市的 "CityCycle" 公共自行车系统出行数据，采用多种可视化方法着重研究天气及日历事件（例如公共假期、周末、节假日等）对骑行时空模式的影响。共享单车出行数据中若存在明确的始末点位置记录，对其采用合适的空间可视化手段可以有效揭示用户骑行的O-D模式。Yang Xu等人[6]通过对新加坡主要无桩自行车共享运营商提供的四个月GPS数据进行特征分解分析，采用合适的时空可视化手段研究了不同地点的骑行活动时间波动模式，并将无桩自行车使用的时空模式关联到多个关键的建筑环境指标。杨永崇[7]等人基于城市骑行大数据，使用地理可视化手段研究城市骑行热点区域及用户出行OD模型。高楹[8]等人基于北京市摩拜单车运营数据，采用空间可视化手段研究该区域共享单车“源”、“汇”点的时空分布模式，并基于此提出一种局地优化的调度模型以优化共享单车小区域内的调度服务。
+The riding trajectory data includes 102,361 shared bicycle riding trajectory data of a certain brand in Shanghai in August 2016, which was collected and organized by the Internet. It contains a riding trajectory point set field separated by "#", but due to network delay, equipment failure, etc., the trajectory points in this field are arranged in disorder and need to design an algorithm to restore the correct riding trajectory. For riding record data, the following rules are used for cleaning: 1) Remove riding records with a duration of less than 1 minute and more than 8 hours; 2) For data with trajectory point sets, remove records with less than 3 recorded trajectory points; 3) Remove records with missing fields and abnormal symbols; 4) Remove records with riding endpoints outside Shanghai, which are beyond the study area.
 
-聚类分析可以有效识别具有相似模式的站点，这些站点可以进一步构建为网络以分析社区划分及流动模式等深层次内容。王若萱等人[9]使用随机森林模型，结合一套基于兴趣点数据的目的地区域建模指标体系重点分析了上海市区域性共享单车出行模式，为后续该领域内的模拟仿真系统提供了研究基础。Jiménez 等人[10]基于用户出行行为模式数据，采用特定数据挖掘工具基于提出的三个指标（利用率、累计行程比率和周转站比率）对都柏林公共自行车共享系统的站点进行聚类分析。张芳[11]等人使用最邻近查找法将共享单车轨迹点聚类到最近的城市兴趣点上，以实现空间划分及骑行网络节点生成。刘冰等人[12]采用相似的研究思路，使用聚类及社区发现算法（鲁汶算法）研究基于共享单车的生活圈，他们发现骑行生活圈的空间范围相较于步行生活圈更大也更复杂，是居民日常出行的基础性组成部分，合理地布置骑行网络对于便利居民生活具有重要意义。
+<!-- class_map= {
+    0: 'Transportation',
+    1: 'Sports and Leisure',
+    2: 'Company',
+    3: 'Business Residence',
+    4: 'Science and Education Culture',
+    5: 'Shopping',
+    6: 'Scenic Spots',
+    7: 'Catering'
+} -->
 
-回归分析可以有效探究用户行为与多种影响因素之间的关联。常新[13]对深圳市龙岗区时间跨度为半个月的共享单车轨迹数据进行回归分析，总结出骑行行为模式并反向推求城市环境对骑行行为的支撑作用，最后使用空间自相关理论分析原因，指出道路的繁忙程度对于骑行频次具有影响，并根据研究结果提出了合理的城市规划建议。谢国微[14]从天气与城市建成对骑行行为的影响出发，综合采用统计方法、地理加权回归模型(GWR)、核密度分析法、多元线性回归法等多种研究手段探究共享单车使用情况的时空模式及其影响因素。高枫[15]等人使用地理探测器研究广州市主城区共享单车时空分布模式及其影响因素。Shen等人[16]通过对新加坡无桩自行车共享服务的GPS数据进行收集和空间自回归模型分析，研究了自行车保有量、周边建筑环境、公共交通便利性、自行车基础设施和天气条件等因素对无桩式共享单车使用量的影响。
+上海市基本地理信息数据包括由 Open  Street  Map 开源地理信息数据网站获取上海市路网数据、兴趣点数据。从 Open Street Map (OSM) 网站下载上海市区域的 OSM 数据，该数据为基于 XML 格式的矢量数据，包含道路、建筑物、兴趣点等地理要素信息，并以节点、关系和区域等形式组织。我们使用 OSMnx 包从 Open Street Map 获取上海市的道路网络数据，包括道路名称、道路等级等信息，并重新投影（CRS: 32651），简化道路网络，生成相应的节点和边。同时，我们还从上海市兴趣点数据集中抽取出八个类别的兴趣点集（交通设施服务、体育休闲服务、公司企业、商务住宅、科教文化服务、购物服务、风景名胜、餐饮服务）共计 122608 条数据。
 
-大量的真实出行数据可以有效支撑模拟仿真系统，基于这些数据也可以实现智能预测。随着数据驱动的智能算法逐步发展，也有一部分研究者注意到共享单车轨迹中蕴含的智能，他们使用新兴的数据驱动智能算法直接将数据本身转化为解决问题的能力，为交通预测、道路规划、大数据感知等应用场景提供助力。谢光明[17]为了解决共享单车时空供需不平衡问题，基于大量骑行轨迹数据研究出一套单车流量预测方法。他首先使用两级聚类及 K-means 算法基于密度找到虚拟站点，然后根据用户访问频次结合鲁汶(Louvain)算法得到虚拟站点间的社区网络最后使用图注意力网络(GAT)及LSTM网络并融合气象参数完成单车流量预测。该方法对于共享单车的动态调度，缓解单车分布时空不平衡具有重要的指导意义。Jie Bao 等人[18]基于上海市共享单车大数据记录开发出一套城市自行车道规划算法，该算法具有一个用于描述轨迹长度与收益关系的启发式函数，能够根据项目预算、施工周期等因素灵活调整自行车道设计结果，具有较高的工程实践价值。王俊等人[19]使用带有卷积层的长短期记忆网络（ConvLSTM），结合南京地区共享单车需求量，天气，季节等参数训练深度学习预测模型，对于需求量的预测精度相较于单一网络（卷积网络或长短期记忆网络）取得一定提升。
+The basic geographic information data of Shanghai includes road network data and point of interest data of Shanghai obtained from the Open Street Map open geographic information data website. Download the OSM data of the Shanghai area from the Open Street Map (OSM) website. The data is vector data based on XML format, which contains geographical elements such as roads, buildings, and points of interest, and is organized in the form of nodes, relationships, and areas. We use the OSMnx package to obtain road network data of Shanghai from Open Street Map, including road names, road grades, etc., and reproject (CRS: 32651), simplify the road network, and generate corresponding nodes and edges. At the same time, we also extracted eight categories of point of interest sets (Transportation, Sports and Leisure, Company, Business Residence, Science and Education Culture, Shopping, Scenic Spots, Catering) from the point of interest data set of Shanghai, totaling 122,608 data.
 
-共享单车带来的环境效益也是许多学者研究的方向。李文翔等人[20]从环保的角度，使用问卷调查法、统计分析法及核密度分析法等方法结合减排因子计算公式评估了2016年上海市全年共享单车对于六种主要污染物的减排效益及空间分布模式，指出上海市人口密集区域具有更大的减排潜力。虽然共享单车是一种新兴互联网经济下发展起来的环境友好型便利交通设施具有诸多优势，共享单车市场快速膨胀也带来了许多城市治理难题，最为显著的问题之一就是大量损坏、报废共享单车的该如何处置。刘泉宏[21]等人重点考虑了共享单车生命周期末环的回收处理问题，基于武汉市共享单车报废点位采用先求取重心后进行 K-means 聚类的处理方法，计算出合理的共享单车回收站部署位置。该研究对于共享单车生命周期中后管理维护站点的选址提供了一定的技术支持。
+## 4.6. Model accuracy
 
-上文提到的大多研究都是将共享单车轨迹视作一个整体，轨迹点视作点云，往往采用基于密度的空间聚类与统计方法，忽略了共享单车骑行轨迹作为矢量线段集合所内含的空间结构信息。任丹[22]使用 TRACLUS 算法船舶轨迹进行聚类，提取出公共航行轨迹，与一般的基于点密度聚类方式不同，该方法考虑到了轨迹数据本身作为向量的几何特征，对于共享单车骑行轨迹研究领域具有启发意义。
+$$
+R^2 = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+$$
 
-通过分析城市共享单车领域的国内外研究成果，本文作如下总结与思考：
-（1）研究细分方向：大致可分为污染物与环境、城市道路规划、模拟仿真算法、社交网络分析、热点路段、时空模式分析及城市道路及空间规划质量评估等。可以发现，共享单车骑行轨迹中蕴含极其丰富的信息，是研究城市、自然、人及其关系的绝佳窗口。
-（2）研究数据及方法：除用户骑行轨迹数据外，研究者也会根据研究的细分方向补充部分数据，包括居民出行问卷调查数据、城市基础地理数据（公交站台、绿地分布等）、天气数据、共享单车服务设施数据（报废处理站、虚拟停车桩等）以及其他类型的轨迹数据（包括步行、出租车等）。研究方法大致可分为统计法、聚类法（基于点、基于轨迹线）、地理统计法、及数据驱动的智能算法等。可以发现，共享单车轨迹数据具有丰富的时空结构信息，需要酌情选择合理的分析方法。
-（3）思考：骑行轨迹数据往往与城市路网分布、主要基础设施分布以及生活设施分布具有一定的关联性，尤其需要考虑其与主要道路间的关联。骑行轨迹目的地暗含了用户的真实意愿，也可以根据目的地类别对轨迹进行分类，实现更进一步的分析。用户的行为特征及单车流动特征也可以成为重要的分析抓手，例如调查一段时间内某一用户的骑行频率，某段时间内单车的周转率等。共享单车出行也会存在一定的早晚高峰及潮汐现象，寻找共享单车骑行量时间波动模式及共享单车潮汐区域空间分布模式具有重要意义。
+$$
+RMSE = \sqrt{\frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{n}}
+$$
 
-## 1.3 研究内容与步骤（框图）
-以往的研究大都以轨迹本身为研究重心，并以原因分析（考察天气等的影响）及副作用分析（考察减排效益等）为目的，并未充分考察骑行者的行为模式及轨迹与基础设施建的相互关系。因此，本文以上海市共享单车出行用户为研究对象，以经预处理及清洗后的上海市共享单车骑行轨迹数据作为数据源，使用最邻近匹配算法、轨迹预处理算法（重排序、简化）、用户行为分析法、线密度算法、数学形态学操作、Jaccard相似系数、时空格网分析等研究方法，探究共享单车轨迹时空模式及其与出行基础设施之间的关系。进一步的，本文为城市规划、共享单车管理等相关领域提出合理化的建议，以更好地促进上海市慢行交通系统的发展。本文的主要研究内容及研究步骤如下： 
-（1）共享单车出行数据数据建库：首先获取2016年8月及2020年8月上海市某品牌共享单车出行数据（每条轨迹带有时间戳及起止点，其中2016年数据带有详细的骑行轨迹）；其次，进行数据预处理与清洗。针对2016年骑行轨迹数据，设计并实现轨迹重排序算法（3.2.2）、轨迹长度量测算法（3.2.2）及轨迹简化（抽稀）算法（3.2.3）。而后，针对轨迹长度、骑行时长、骑行速度、字段缺损状况等因素设计合理的数据清洗规则，剔除异常值；最后，计算每一段轨迹的起止点的GeoHash值，并将2016年骑行轨迹数据保存为便于存取的二进制格式（*.pickle），以便后续处理。
-（2）上海市基础地理信息数据建库：首先从 Open Street Map 网站上下载上海市地理数据集（包含兴趣的、个级别路网等数据），并对数据进行裁剪及清洗；对于兴趣点数据，仅保留八类意义明确类型的数据；对于路网数据，仅提取主路、次主路及支路三个级别路网。然后，将兴趣的数据转化为 GeoHash 格式，并构建树状空间索引，以便快速查找最邻近的兴趣点；最后将空间索引及数据集保存为为易于存取的二进制格式。
-（3）共享单车出行时间模式分析：借助预先建立的出行数据库，从时间角度探究骑行出行模式，分别从轨迹时距分布模式、单车日周转趋势，用户骑行时间间隔模式角度对用户骑行出行模式进行分析，并探究背后的可能原因，总结相关规律。
-（4）共享单车出行空间模式分析：综合出行数据库及上海市兴趣点数据库，从空间角度考察轨迹的空间分布模式。首先使用轨迹终点最近邻匹配算法（3.3.1）为每一段轨迹终点匹配最邻近兴趣点，并据此分析轨迹终点的类型占比及空间分布模式。然后使用线密度栅格来具体分析出行轨迹空间分布模式及其与路网间的相似关系。最后根据潮汐指数来考察共享单车潮汐区域空间分布，并总结相关规律。
+$$
+MAE = \frac{\sum_{i=1}^{n} |y_i - \hat{y}_i|}{n}
+$$
 
-## 1.4 论文组织结构
-本文共分为五章：
-第一章为绪论。主要从宏观角度论述本文的研究背景及研究意义，并对国内外共享单车轨迹分析、城市出行分析等领域的研究成果进行总结概括为国内外研究现状，参考国内外研究现状确定本文研究内容及技术路线，为后续研究明确方向，打下基础。
-第二章介绍理论基础与相关技术。该部分首先从学术理论入手，介绍了行为地理学、城市职住平衡与过剩出行理论，进一步明确所研究问题的理论本质。然后从研究技术着手，介绍了相似性分析、密度分析、用户行为分析等领域内常用的技术手段。
-第三章介绍本研究用到的数据及开展研究时所用到的具体方法。首先介绍数据来源及数据细节，并介绍数据清洗规则,而后结合数据特征，介绍轨迹点重排序、轨迹长度量测、轨迹抽稀、数学形态学操作及Jaccard相似系数等数据处理分析算法。
 
-第四章着重介绍本文的研究结论。从时、空两个方向，结合轨迹时距分布特征、目的地分布特征、综合使用线密度计算、数学形态学操作等方法，得出骑行热点时段分布、骑行热点路段分布、各级别道路对骑行出行支撑情况及骑行潮汐区域分布情况。
-第五章为总结与展望，结合本文研究内容提出概括性结论，针对研究过程提出不足与未来进一步完善的方向。同时，结合得到的上海市骑行出行时空分布特征，为相关企业及有关部门建言献策。
+## 5.1.1. Cycling temporal characteristics analysis
 
-## 1.5 本章小结
-本章首先介绍本文的研究背景及意义，指出研究共享单车出行模式对于理解及优化以共享单车为代表的城市慢行交通系统具有重要意义。而后，本文考察了国内外研究现状，提出相关总结与思考，并进一步介绍本文的主要研究内容与步骤框架。最后，该章节对本文组织结果做出简要介绍。
+从时间角度分析共享单车骑行特征，首先统计所有订单的骑行时间及距离，并绘制为柱状图，分析骑行时间和距离的分布规律(fig.a,fig.b)。计算所有订单的平均骑行时间和距离，分析共享单车的骑行特征。可以发现平均骑行距离为1.8公里，一公里左右的短途骑行为主流。可以发现，共享单车平均通勤时长为16分钟，小于10分钟的短途骑行为主流, 极少有人选择骑行一个小时以上。
+
+From the time perspective, the cycling characteristics of shared bicycles are analyzed. First, the riding time and distance of all orders are counted and drawn as a histogram to analyze the distribution law of riding time and distance (fig.a, fig.b). The average riding time and distance of all orders are calculated to analyze the riding characteristics of shared bicycles. It can be found that the average riding distance is 1.8 kilometers, and short rides of about one kilometer are the mainstream. It can be found that the average commuting time of shared bicycles is 16 minutes, and short rides of less than 10 minutes are the mainstream, and very few people choose to ride for more than an hour.
+
+其次，计算同一用户两次骑行之间的时间间隔，绘制时间间隔的累计分布曲线（CDF）及概率密度分布曲线（PDF）。分析统计图（fig.c）累计分布曲线在 200 小时（约间隔 8 天）处具有明显拐点，数据相对集中于该拐点左侧，呈现出明显的短间隔高频特征，即多数用户一周内要多次骑行共享单车。概率密度分布曲线数（fig.d）据相对集中于短间隔方向（ 间隔 100 小时以下 ），这也意味着大部分用户频繁使用共享单车，两次骑行间隔较短，多用于日常通勤。
+
+Secondly, calculate the time interval between two rides of the same user, and draw the cumulative distribution curve (CDF) and probability density distribution curve (PDF) of the time interval. Analyze the cumulative distribution curve in the statistical chart (fig.c), the cumulative distribution curve has an obvious inflection point at 200 hours (about 8 days), and the data is relatively concentrated on the left side of the inflection point, showing an obvious short interval high-frequency feature, that is, most users need to ride shared bicycles multiple times a week. The probability density distribution curve (fig.d) is relatively concentrated in the short interval direction (interval below 100 hours), which also means that most users frequently use shared bicycles, and the interval between two rides is short, mostly used for daily commuting.
+
+最后，对共享单车通勤时段进行汇总分析，研究不同工作日一天二十四小时不同时段的通勤规律。首先将骑行数据的开始时间按照工作日分组汇总，再对每一个工作日按二十四小时统计每一个小时内的订单数量，最后将每个小时的订单数量除以当前工作日的总订单数量，得到每个小时的订单占比。分析统计图（fig.e）可以发现，工作日骑行具有明显的早晚高峰特征，早高峰集中在8:00至9:00，晚高峰则以16:00至17:00较为突出，与用户工作日上班、上学等通勤需求贴合。周末骑行曲线总体平缓，且8:00至15:00总体高于工作日，其中16:00至19:00呈现出一个平滑单峰，这样的分布与用户周末休闲放松需求相符合。
+
+Finally, summarize and analyze the commuting time of shared bicycles, and study the commuting rules of different working days in different time periods of twenty-four hours. First, summarize the start time of the riding data according to the working day, then count the number of orders in each hour within twenty-four hours for each working day, and finally divide the number of orders in each hour by the total number of orders of the current working day to obtain the proportion of orders in each hour. Analyze the statistical chart (fig.e), it can be found that weekday riding has obvious morning and evening peak characteristics. The morning peak is concentrated from 8:00 to 9:00, and the evening peak is more prominent from 16:00 to 17:00, which is in line with the commuting needs of users on weekdays. The weekend riding curve is generally flat, and 8:00 to 15:00 is generally higher than weekdays. Among them, 16:00 to 19:00 shows a smooth single peak, which is in line with the user's weekend leisure and relaxation needs.
+
+## 5.1.2. Cycling spatial characteristics analysis
+从空间角度，分析共享单车骑行特征，首先使用兴趣点匹配算法（Algorithm 2）为骑行轨迹终点匹配兴趣点类别，绘制饼图分析骑行目的地类别的分布。分析统计图（fig.f）可以发现购物服务、交通设施服务和餐饮服务为主要目的地，占比近六成，反映了上海市商业活动活跃、交通发达、生活便利的特点。科教文化服务、商务住宅和公司企业也是较多用户的选择，占比近三成，表明上海市拥有较多较密集的院校及企业。风景名胜和体育休闲服务占比最少，可能与人口密集、生活压力大有关。
+
+From the spatial perspective, analyze the cycling characteristics of shared bicycles. First, use the interest point matching algorithm (Algorithm 2) to match the interest point category for the end point of the riding trajectory, draw a pie chart to analyze the distribution of riding destination categories. Analyze the statistical chart (fig.f), it can be found that Shopping, Transportation, and Catering are the main destinations, accounting for nearly 60%, reflecting the characteristics of active commercial activities, developed transportation, and convenient life in Shanghai. Science and Education Culture, Business Residence, and Company are also choices for many users, accounting for nearly 30%, indicating that Shanghai has many and dense schools and companies. Scenic Spots and Sports and Leisure services account for the least, which may be related to the dense population and high life pressure.
+
+
+
+## References
+1. Shanghai Municipal Government. (2024). Guidelines for Encouraging and Regulating the Development of Internet Rental Bicycles in Shanghai (Trial). Shanghai Government. https://www.shanghai.gov.cn/
