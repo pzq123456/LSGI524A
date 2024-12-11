@@ -64,7 +64,6 @@ Finally, summarize and analyze the commuting time of shared bicycles, and study 
 
 From the spatial perspective, analyze the cycling characteristics of shared bicycles. First, use the interest point matching algorithm (Algorithm 2) to match the interest point category for the end point of the riding trajectory, draw a pie chart to analyze the distribution of riding destination categories. Analyze the statistical chart (fig.f), it can be found that Shopping, Transportation, and Catering are the main destinations, accounting for nearly 60%, reflecting the characteristics of active commercial activities, developed transportation, and convenient life in Shanghai. Science and Education Culture, Business Residence, and Company are also choices for many users, accounting for nearly 30%, indicating that Shanghai has many and dense schools and companies. Scenic Spots and Sports and Leisure services account for the least, which may be related to the dense population and high life pressure.
 
-
-
+<!-- https://docs.google.com/document/d/1S-EPWRyEHVZCbvZeJR5T8TOtHwBlb9Hg0yE-mTWV8kA/edit?tab=t.0 -->
 ## References
 1. Shanghai Municipal Government. (2024). Guidelines for Encouraging and Regulating the Development of Internet Rental Bicycles in Shanghai (Trial). Shanghai Government. https://www.shanghai.gov.cn/

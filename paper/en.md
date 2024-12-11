@@ -1,0 +1,37 @@
+## 4.1. Cycling track reorder and map matching
+
+Figure 3 is a schematic diagram of the reordering and road network matching process of a cycling trajectory. It can be seen that the original trajectory data has an obvious "jump phenomenon", that is, the distance between adjacent trajectory points may be very far. This problem can be solved with a very simple idea, that is, the nearest point is probably the next point.
+
+For the unordered trajectory point set, under the premise of knowing the starting and ending points, this paper proposes a trajectory reordering algorithm based on GeoHash spatial index, Manhattan distance, and greedy strategy (Figure 4a): it is assumed that all trajectory point sets in the records are in a disordered state. For any trajectory point set, first create an empty list List and calculate the GeoHash encoding for each point in the list Pn containing all points of the starting and ending points and put it into the set GeoHash (this step also uses the characteristics of the set to achieve deduplication). Then, loop iteratively until the trajectory point list is empty. In each iteration, the algorithm calculates the Manhattan distance between the current point and the end point of the trajectory and finds the nearest point. If the nearest point found is the end point, the algorithm terminates, otherwise, the nearest point is added to the trajectory and removed from the GeoHash set. Finally, convert the GeoHash encoding in the trajectory list List to coordinates and return the simplified trajectory.
+
+Since the native hash value calculation function of the set in the Python programming language acts on the data of the tuple type, there will be binary precision loss, so it is necessary to first encode (encode) the position tuple using the GeoHash algorithm and then store the obtained string in the set. When the actual coordinates are needed, use the corresponding decoding method (decode) to avoid the precision loss caused by the hash value calculation when storing and removing the set. Considering the distance distortion problem of GeoHash encoding, this algorithm uses the Manhattan distance between the two longitude and latitude coordinates to estimate the actual distance.
+
+Finally, using the OSMnx package to construct a topological network containing riding road nodes and edges. The sorted GPS trajectory is matched to the map using a modified Hidden Markov Model (HMM). By calculating the emission and transition probabilities, the Viterbi algorithm is used to select the most likely path, and the matched shared bicycle riding trajectory is finally obtained.
+
+
+
+Figure 3. Schematic of the cycling trajectory reordering and road network matching process
+
+
+## 4.2. Cycling destination recognition
+
+When we have trajectory data, we also want to further explore the user's cycling destination to analyze the motivation. Here we think of using the interest point matching algorithm, that is, matching the trajectory end point with the interest point to determine the user's cycling destination category. There are two key ideas that make our algorithm practical. First, the first law of geography: everything is related to each other, but the closer the distance, the greater the correlation. Second, shared bicycles solve the "last mile" problem very well, that is, users riding shared bicycles will get as close as possible to their destination, rather than public transportation that can only reach fixed stations.
+
+Given that the algorithm involves a huge amount of geospatial data. We have about 120,000 interest points and 100,000 trajectory data. To process so much data without considering the performance of the optimization algorithm is a very scary thing: if you directly search all points, the algorithm time complexity is about $O(n^2)$, roughly estimated to perform 12 billion distance calculations (haversine). According to the local machine (i7-10870H, RAM 16 GB) test, it consumes about 15 μs per execution, roughly estimated that the algorithm will execute for more than three hours without considering the sorting operation, so it is necessary to establish a spatial data structure to support efficient search.
+
+In 2008, Gustavo Niemeyer proposed the GeoHash geographic encoding system, which encodes geographic locations into short strings composed of letters and numbers. GeoHash is a multi-level spatial data structure that encodes space by grid-like partitioning and Z-order curve filling. The precision of GeoHash encoding can be infinitely expanded by increasing the length of the encoding characters, and the spatial precision can be reduced by removing the end characters of the encoding (the spatial precision decreases accordingly). Because of its hierarchical encoding structure, GeoHash ensures that the longer the shared prefix of two encodings, the closer the geographic locations they represent.
+
+In summary, we can summarize two key features of GeoHash encoding: 1. The longer the encoding length, the higher the precision; 2. The longer the shared prefix of the encoding, the closer the geographic location it represents. We can use these two features to convert spatial query actions into string matching problems. (Figure 4e)
+
+The algorithm first constructs a tree index (GeoHashTree) for the interest point data set (Figure 4c,d), and then performs a greedy algorithm (greedyQuery) to gradually expand the search space range for a trajectory end point. The greedy search algorithm (Figure 4b) first performs a search operation on the input encoding string, and if no return value is obtained, it will remove the last bit one by one (expand the space range) and search again until the nearest interest point is found (or the matching encoding is empty). Efficient spatial indexing greatly speeds up the search for the nearest neighbor. In the experiment, using this algorithm to match the end points of nearly 100,000 trajectory data in a data set of 120,000 interest points took about two minutes.
+
+This efficient algorithm can bring some convenience to scientific research work, so it is valuable. In some cases, this optimization algorithm is even decisive. For example, we can use this algorithm to match interest points for each point in the trajectory, thereby converting the user's cycling trajectory from geographic coordinates to a sequence (sentence) composed of a series of interest point category codes, and analyze user behavior in depth. Without optimization, this analysis process would be considered impractical.
+
+
+(1) 共享单车的骑行模式呈现出明显的时间特征，工作日和周末的骑行模式存在显著差异。工作日骑行高峰期为早晚高峰，周末骑行高峰期为下午。
+
+(1) The cycling mode of shared bicycles shows obvious time characteristics, and there are significant differences in the cycling mode between weekdays and weekends. The peak riding period on weekdays is the morning and evening peak hours, and the peak riding period on weekends is the afternoon.
+
+(2) 共享单车是典型的短途出行工具，骑行距离两公里以下骑行时长一分钟以下的短途骑行为主流。大部分用户两次骑行间隔较短，多用于日常通勤。购物服务、交通设施服务和餐饮服务为主要目的地，占比近六成。
+
+(2) Shared bicycles are typical short-distance travel tools, and short-distance rides with a riding distance of less than two kilometers and a riding time of less than one minute are mainstream. Most users have a short interval between two rides and are mostly used for daily commuting. Shopping services, transportation facilities services, and catering services are the main destinations, accounting for nearly sixty percent.
